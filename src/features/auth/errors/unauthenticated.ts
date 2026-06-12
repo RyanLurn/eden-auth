@@ -1,4 +1,4 @@
-import { BaseError } from "@/errors/base";
+import { BaseError } from "@/errors/classes/base";
 
 export class UnauthenticatedError extends BaseError<
   "UNAUTHENTICATED_ERROR",
