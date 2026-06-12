@@ -1,7 +1,8 @@
+import { UNAUTHENTICATED_ERROR_CODE } from "@/features/auth/errors/codes";
 import { BaseError } from "@/errors/classes/base";
 
 export class UnauthenticatedError extends BaseError<
-  "UNAUTHENTICATED_ERROR",
+  typeof UNAUTHENTICATED_ERROR_CODE,
   null
 > {
   method: string;
@@ -11,10 +12,15 @@ export class UnauthenticatedError extends BaseError<
     super({
       name: "UnauthenticatedError",
       message: `An unauthenticated request was made to "[${method}] ${url}".`,
-      code: "UNAUTHENTICATED_ERROR",
+      code: UNAUTHENTICATED_ERROR_CODE,
       cause: null,
     });
     this.method = method;
     this.url = url;
   }
 }
+
+export type SerializedUnauthenticatedError = Pick<
+  UnauthenticatedError,
+  "message" | "code"
+>;
