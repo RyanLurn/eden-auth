@@ -11,3 +11,8 @@ export class UnexpectedError extends BaseError<typeof UNEXPECTED_ERROR_CODE> {
     });
   }
 }
+
+export type SerializedUnexpectedError = Pick<
+  UnexpectedError,
+  "message" | "code"
+>;
