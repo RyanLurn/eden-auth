@@ -1,4 +1,4 @@
-import type { BaseError } from "@/errors/classes/base";
+import type { BaseError } from "@/error/classes/base";
 import type { JsonValue } from "@/types/json-value";
 
 export interface SerializedSuccess<TData extends JsonValue> {

@@ -1,5 +1,5 @@
-import { UNEXPECTED_ERROR_CODE } from "@/errors/codes";
-import { BaseError } from "@/errors/classes/base";
+import { UNEXPECTED_ERROR_CODE } from "@/error/codes";
+import { BaseError } from "@/error/classes/base";
 
 export class UnexpectedError extends BaseError<typeof UNEXPECTED_ERROR_CODE> {
   constructor({ message, cause }: { message: string; cause: unknown }) {
