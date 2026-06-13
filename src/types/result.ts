@@ -1,13 +1,13 @@
 export type Result<TData, TError extends Error> =
-  | Failure<TError>
-  | Success<TData>;
+  | SuccessResult<TData>
+  | ErrorResult<TError>;
 
-export interface Success<TData> {
+export interface SuccessResult<TData> {
   success: true;
   data: TData;
 }
 
-export interface Failure<TError extends Error> {
+export interface ErrorResult<TError extends Error> {
   success: false;
   error: TError;
 }
