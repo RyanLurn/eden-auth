@@ -1,8 +1,9 @@
 import {
+  INTERNAL_SERVER_ERROR_MESSAGE,
+  INTERNAL_SERVER_ERROR_CODE,
   UNEXPECTED_ERROR_CODE,
-  INTERNAL_SERVER_ERROR,
 } from "@/error/constants";
-import { BaseError } from "@/error/classes/base";
+import { type ErrorInUI, BaseError } from "@/error/classes/base";
 
 export class UnexpectedError extends BaseError<typeof UNEXPECTED_ERROR_CODE> {
   constructor({ message, cause }: { message: string; cause: unknown }) {
@@ -14,7 +15,10 @@ export class UnexpectedError extends BaseError<typeof UNEXPECTED_ERROR_CODE> {
     });
   }
 
-  serializeForUI() {
-    return INTERNAL_SERVER_ERROR;
+  serializeForUI(): ErrorInUI<typeof INTERNAL_SERVER_ERROR_CODE> {
+    return {
+      code: INTERNAL_SERVER_ERROR_CODE,
+      message: INTERNAL_SERVER_ERROR_MESSAGE,
+    };
   }
 }
