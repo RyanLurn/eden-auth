@@ -1,4 +1,8 @@
-import { getRequestHeaders, getRequestUrl } from "@tanstack/react-start/server";
+import {
+  getRequestHeaders,
+  setResponseStatus,
+  getRequestUrl,
+} from "@tanstack/react-start/server";
 import { createServerFn } from "@tanstack/react-start";
 
 import type {
@@ -10,13 +14,15 @@ import type { SerializedUser } from "@/features/auth/types";
 import { getInferredSession } from "@/features/auth/get-inferred-session";
 import { serializeUser } from "@/features/auth/utils";
 
-export const getUserFn = createServerFn().handler(async () => {
+const method = "GET";
+
+export const getUserFn = createServerFn({ method }).handler(async () => {
   const headers = getRequestHeaders();
   const href = getRequestUrl().href;
 
   const getInferredSessionResult = await getInferredSession({
     headers,
-    method: "GET",
+    method,
     href,
   });
 
@@ -24,6 +30,7 @@ export const getUserFn = createServerFn().handler(async () => {
     const error = getInferredSessionResult.error;
     console.error(error.serializeForLog());
 
+    setResponseStatus(error.statusCode);
     const errorInUI = error.serializeForUI();
     const errorResponse: ErrorResponse<typeof errorInUI.code> = {
       success: false,
