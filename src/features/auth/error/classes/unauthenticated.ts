@@ -1,9 +1,12 @@
-import { UNAUTHENTICATED_ERROR_CODE } from "@/features/auth/error/codes";
+import {
+  UNAUTHENTICATED_ERROR_STATUS_CODE,
+  UNAUTHENTICATED_ERROR_CODE,
+} from "@/features/auth/error/codes";
 import { type ErrorInUI, BaseError } from "@/error/classes/base";
 
 export class UnauthenticatedError extends BaseError<
   typeof UNAUTHENTICATED_ERROR_CODE,
-  null
+  typeof UNAUTHENTICATED_ERROR_STATUS_CODE
 > {
   method: string;
   url: string;
@@ -13,6 +16,7 @@ export class UnauthenticatedError extends BaseError<
       name: "UnauthenticatedError",
       message: `An unauthenticated request was made to "[${method}] ${url}".`,
       code: UNAUTHENTICATED_ERROR_CODE,
+      statusCode: UNAUTHENTICATED_ERROR_STATUS_CODE,
       cause: null,
     });
     this.method = method;
