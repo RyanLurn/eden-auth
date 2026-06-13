@@ -31,7 +31,7 @@ export class BaseError<
   serializeForLog() {
     return {
       ...this,
-      cause: serializeError(this.cause),
+      cause: this.cause === null ? null : serializeError(this.cause),
     };
   }
 }
