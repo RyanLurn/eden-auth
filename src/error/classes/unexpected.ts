@@ -1,4 +1,7 @@
-import { UNEXPECTED_ERROR_CODE } from "@/error/codes";
+import {
+  UNEXPECTED_ERROR_CODE,
+  INTERNAL_SERVER_ERROR,
+} from "@/error/constants";
 import { BaseError } from "@/error/classes/base";
 
 export class UnexpectedError extends BaseError<typeof UNEXPECTED_ERROR_CODE> {
@@ -10,9 +13,8 @@ export class UnexpectedError extends BaseError<typeof UNEXPECTED_ERROR_CODE> {
       cause,
     });
   }
-}
 
-export type SerializedUnexpectedError = Pick<
-  UnexpectedError,
-  "message" | "code"
->;
+  serializeForUI() {
+    return INTERNAL_SERVER_ERROR;
+  }
+}

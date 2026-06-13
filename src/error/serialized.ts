@@ -1,4 +1,4 @@
-import type { INTERNAL_SERVER_ERROR_CODE } from "@/error/codes";
+import type { INTERNAL_SERVER_ERROR_CODE } from "@/error/constants";
 import type { BaseError } from "@/error/classes/base";
 
 export type SerializedError = Pick<BaseError<string>, "message" | "code">;
