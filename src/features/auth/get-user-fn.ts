@@ -7,21 +7,21 @@ import type {
 } from "@/types/serialized-responses";
 import type { SerializedUser } from "@/features/auth/types";
 
-import { getSession } from "@/features/auth/get-session";
+import { getInferredSession } from "@/features/auth/get-inferred-session";
 import { serializeUser } from "@/features/auth/utils";
 
 export const getUserFn = createServerFn().handler(async () => {
   const headers = getRequestHeaders();
   const url = getRequestUrl();
 
-  const getSessionResult = await getSession({
+  const getInferredSessionResult = await getInferredSession({
     headers,
     method: "GET",
     url: url.href,
   });
 
-  if (!getSessionResult.success) {
-    const error = getSessionResult.error;
+  if (!getInferredSessionResult.success) {
+    const error = getInferredSessionResult.error;
     console.error(error.serializeForLog());
 
     const errorInUI = error.serializeForUI();
@@ -32,7 +32,7 @@ export const getUserFn = createServerFn().handler(async () => {
     return errorResponse;
   }
 
-  const serializedUser = serializeUser(getSessionResult.data.user);
+  const serializedUser = serializeUser(getInferredSessionResult.data.user);
   const successResponse: SuccessResponse<SerializedUser> = {
     success: true,
     data: serializedUser,
