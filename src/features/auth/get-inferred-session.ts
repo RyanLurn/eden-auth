@@ -8,11 +8,11 @@ import { auth } from "@/features/auth";
 export async function getInferredSession({
   headers,
   method,
-  url,
+  href,
 }: {
   headers: Headers;
   method: string;
-  url: string;
+  href: string;
 }): Promise<Result<InferredSession, UnauthenticatedError | UnexpectedError>> {
   try {
     const session = await auth.api.getSession({
@@ -22,7 +22,7 @@ export async function getInferredSession({
     if (!session) {
       return {
         success: false,
-        error: new UnauthenticatedError({ method, url }),
+        error: new UnauthenticatedError({ method, href }),
       };
     }
 
@@ -34,7 +34,7 @@ export async function getInferredSession({
     return {
       success: false,
       error: new UnexpectedError({
-        message: `An error occurred while trying to get session for a request to "[${method}] ${url}".`,
+        message: `An error occurred while trying to get session for a request to ${href}.`,
         cause: error,
       }),
     };

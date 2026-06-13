@@ -9,18 +9,18 @@ export class UnauthenticatedError extends BaseError<
   typeof UNAUTHENTICATED_ERROR_STATUS_CODE
 > {
   method: string;
-  url: string;
+  href: string;
 
-  constructor({ method, url }: { method: string; url: string }) {
+  constructor({ method, href }: { method: string; href: string }) {
     super({
       name: "UnauthenticatedError",
-      message: `An unauthenticated request was made to "[${method}] ${url}".`,
+      message: `An unauthenticated request was made to ${href}.`,
       code: UNAUTHENTICATED_ERROR_CODE,
       statusCode: UNAUTHENTICATED_ERROR_STATUS_CODE,
       cause: null,
     });
     this.method = method;
-    this.url = url;
+    this.href = href;
   }
 
   serializeForUI(): ErrorInUI<typeof UNAUTHENTICATED_ERROR_CODE> {

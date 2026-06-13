@@ -12,12 +12,12 @@ import { serializeUser } from "@/features/auth/utils";
 
 export const getUserFn = createServerFn().handler(async () => {
   const headers = getRequestHeaders();
-  const url = getRequestUrl();
+  const href = getRequestUrl().href;
 
   const getInferredSessionResult = await getInferredSession({
     headers,
     method: "GET",
-    url: url.href,
+    href,
   });
 
   if (!getInferredSessionResult.success) {
