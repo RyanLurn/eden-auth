@@ -6,7 +6,7 @@ export interface SuccessResponse<TData extends JsonValue> {
   data: TData;
 }
 
-export interface ErrorResponse<TCode extends string> {
+export interface ErrorResponse<TError extends ErrorInUI<string>> {
   success: false;
-  error: ErrorInUI<TCode>;
+  error: TError;
 }

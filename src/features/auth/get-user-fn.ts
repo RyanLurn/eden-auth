@@ -32,7 +32,7 @@ export const getUserFn = createServerFn({ method }).handler(async () => {
 
     setResponseStatus(error.statusCode);
     const errorInUI = error.serializeForUI();
-    const errorResponse: ErrorResponse<typeof errorInUI.code> = {
+    const errorResponse: ErrorResponse<typeof errorInUI> = {
       success: false,
       error: errorInUI,
     };
