@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect, Outlet } from "@tanstack/react-router";
 
 import { getUserFn } from "@/features/auth/get-user-fn";
 
@@ -19,9 +19,9 @@ export const Route = createFileRoute("/_authenticated")({
 
     return getUserResult.data;
   },
-  component: RouteComponent,
+  component: AuthenticatedLayout,
 });
 
-function RouteComponent() {
-  return <div>Hello "/_authenticated"!</div>;
+function AuthenticatedLayout() {
+  return <Outlet />;
 }

@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/account/")({
-  component: RouteComponent,
+  component: AccountPage,
 });
 
-function RouteComponent() {
-  return <div>Hello "/_authenticated/account/"!</div>;
+function AccountPage() {
+  const user = Route.useRouteContext();
+  return <div>Hello, {user.name}!</div>;
 }
