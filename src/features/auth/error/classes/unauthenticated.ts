@@ -1,7 +1,7 @@
 import {
   UNAUTHENTICATED_ERROR_STATUS_CODE,
   UNAUTHENTICATED_ERROR_CODE,
-} from "@/features/auth/error/codes";
+} from "@/features/auth/error/constants";
 import { type ErrorInUI, BaseError } from "@/error/classes/base";
 
 export class UnauthenticatedError extends BaseError<
