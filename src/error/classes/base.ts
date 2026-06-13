@@ -29,10 +29,7 @@ export class BaseError<
   }
 
   serializeForLog() {
-    return {
-      ...this,
-      cause: this.cause === null ? null : serializeError(this.cause),
-    };
+    return serializeError(this);
   }
 }
 
