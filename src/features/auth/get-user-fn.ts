@@ -25,7 +25,7 @@ export const getUserFn = createServerFn().handler(async () => {
     console.error(error.serializeForLog());
 
     const errorInUI = error.serializeForUI();
-    const errorResponse: ErrorResponse<typeof errorInUI> = {
+    const errorResponse: ErrorResponse<typeof errorInUI.code> = {
       success: false,
       error: errorInUI,
     };
