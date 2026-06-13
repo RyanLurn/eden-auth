@@ -10,10 +10,12 @@ export class UnexpectedError extends BaseError<
   typeof UNEXPECTED_ERROR_CODE,
   typeof UNEXPECTED_ERROR_STATUS_CODE
 > {
-  constructor({ message, cause }: { message: string; cause: unknown }) {
+  constructor({ message, cause }: { message?: string; cause: unknown }) {
     super({
       name: "UnexpectedError",
-      message,
+      message:
+        message ??
+        "Something went wrong. Check the cause of this error to learn more.",
       code: UNEXPECTED_ERROR_CODE,
       statusCode: UNEXPECTED_ERROR_STATUS_CODE,
       cause,
