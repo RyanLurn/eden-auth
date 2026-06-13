@@ -1,5 +1,5 @@
 import { UNAUTHENTICATED_ERROR_CODE } from "@/features/auth/error/codes";
-import { BaseError } from "@/error/classes/base";
+import { type ErrorInUI, BaseError } from "@/error/classes/base";
 
 export class UnauthenticatedError extends BaseError<
   typeof UNAUTHENTICATED_ERROR_CODE,
@@ -18,9 +18,11 @@ export class UnauthenticatedError extends BaseError<
     this.method = method;
     this.url = url;
   }
-}
 
-export type SerializedUnauthenticatedError = Pick<
-  UnauthenticatedError,
-  "message" | "code"
->;
+  serializeForUI(): ErrorInUI<typeof UNAUTHENTICATED_ERROR_CODE> {
+    return {
+      code: UNAUTHENTICATED_ERROR_CODE,
+      message: "You are unauthenticated. Please sign in to continue.",
+    };
+  }
+}

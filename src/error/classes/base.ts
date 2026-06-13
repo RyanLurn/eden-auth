@@ -28,4 +28,7 @@ export class BaseError<TCode extends string, TCause = unknown> extends Error {
   }
 }
 
-export type ErrorInUI = Pick<BaseError<string>, "message" | "code">;
+export type ErrorInUI<TCode extends string> = Pick<
+  BaseError<TCode>,
+  "message" | "code"
+>;
