@@ -1,5 +1,4 @@
 import {
-  type ErrorComponentProps,
   createFileRoute,
   useRouter,
   redirect,
@@ -7,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 import { useState } from "react";
 
+import { InternalServerError } from "@/error/classes/internal-server";
 import { getUserFn } from "@/features/auth/get-user-fn";
 import { Button } from "@/components/ui/button";
 
@@ -22,12 +22,16 @@ export const Route = createFileRoute("/_authenticated")({
           search: { redirect: location.href },
         });
       }
-      throw new Error(error.message);
+      throw new InternalServerError();
     }
 
     return getUserResult.data;
   },
-  errorComponent: ErrorPage,
+  errorComponent: ({ error }) => {
+    if (error instanceof InternalServerError) {
+      return <ErrorPage error={error} />;
+    }
+  },
   component: AuthenticatedLayout,
 });
 
@@ -35,7 +39,7 @@ function AuthenticatedLayout() {
   return <Outlet />;
 }
 
-function ErrorPage({ error }: ErrorComponentProps) {
+function ErrorPage({ error }: { error: InternalServerError }) {
   const router = useRouter();
   const [isRetrying, setIsRetrying] = useState(false);
 

@@ -12,7 +12,7 @@ export class InternalServerError extends BaseError<
 > {
   constructor() {
     super({
-      name: "UnexpectedError",
+      name: "InternalServerError",
       message: INTERNAL_SERVER_ERROR_MESSAGE,
       code: INTERNAL_SERVER_ERROR_CODE,
       statusCode: INTERNAL_SERVER_ERROR_STATUS_CODE,
