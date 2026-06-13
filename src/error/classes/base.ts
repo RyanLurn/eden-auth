@@ -1,3 +1,5 @@
+import { serializeError } from "serialize-error";
+
 export class BaseError<TCode extends string, TCause = unknown> extends Error {
   code: TCode;
   declare cause: TCause;
@@ -16,5 +18,12 @@ export class BaseError<TCode extends string, TCause = unknown> extends Error {
     super(message, { cause });
     this.name = name;
     this.code = code;
+  }
+
+  serializeForLog() {
+    return {
+      ...this,
+      cause: serializeError(this.cause),
+    };
   }
 }
