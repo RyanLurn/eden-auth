@@ -50,6 +50,7 @@ function SignInPage() {
 
       const { error } = await authClient.signIn.email({
         ...parsedValue,
+        // Unlike the signUp method, this callback url actually applies to both email verification and this method's success.
         callbackURL: redirect ? redirect : DashboardRoute.to,
       });
 

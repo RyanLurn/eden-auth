@@ -57,7 +57,7 @@ function SignUpPage() {
         name,
         email,
         password,
-        // This is a callback for email verification, not for this function's success
+        // This is a callback for email verification, not for this method's success
         callbackURL: OnboardRoute.to,
       });
 
