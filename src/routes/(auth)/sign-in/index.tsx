@@ -118,6 +118,7 @@ function SignInPage() {
             <signInForm.SubmitButton
               submittingText="Signing in..."
               submitText="Sign in"
+              className="w-full"
             />
           </signInForm.AppForm>
         </CardFooter>

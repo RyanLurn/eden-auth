@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 
 interface SubmitButtonProps extends StrictOmit<
   ComponentProps<typeof Button>,
-  "disabled" | "form"
+  "disabled" | "form" | "type"
 > {
   submitText?: string;
   submittingText?: string;
@@ -33,6 +33,7 @@ export function SubmitButton({
         <Button
           disabled={isPristine || !canSubmit || isSubmitting}
           form={formContext.formId}
+          type="submit"
           {...props}
         >
           {isSubmitting ? (
