@@ -60,7 +60,7 @@ function SignInPage() {
           switch (error.code) {
             case "INVALID_EMAIL_OR_PASSWORD": {
               toast.error("Invalid email or password");
-              break;
+              return;
             }
             case "INVALID_EMAIL": {
               formApi.setFieldMeta("email", (prev) => ({
@@ -69,12 +69,11 @@ function SignInPage() {
                   onServer: [{ message: error.message }],
                 },
               }));
-              break;
+              return;
             }
           }
-        } else {
-          toast.error(fallbackErrorMessage);
         }
+        toast.error(fallbackErrorMessage);
       }
     },
   });
