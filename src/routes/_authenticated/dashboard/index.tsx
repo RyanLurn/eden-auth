@@ -5,5 +5,6 @@ export const Route = createFileRoute("/_authenticated/dashboard/")({
 });
 
 function DashboardPage() {
-  return <div>Hello "/_authenticated/dashboard/"!</div>;
+  const user = Route.useRouteContext();
+  return <div>Hello, {user.name}! Welcome to the Dashboard page.</div>;
 }

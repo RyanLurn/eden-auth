@@ -6,5 +6,5 @@ export const Route = createFileRoute("/_authenticated/account/")({
 
 function AccountPage() {
   const user = Route.useRouteContext();
-  return <div>Hello, {user.name}!</div>;
+  return <div>Hello, {user.name}! Welcome to the Account page.</div>;
 }
