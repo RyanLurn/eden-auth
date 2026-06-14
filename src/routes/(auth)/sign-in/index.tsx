@@ -107,7 +107,12 @@ function SignInPage() {
                 }}
                 name="rememberMe"
               >
-                {(appField) => <appField.CheckField label="Remember me" />}
+                {(appField) => (
+                  <appField.CheckField
+                    className="rounded-sm"
+                    label="Remember me"
+                  />
+                )}
               </signInForm.AppField>
             </FieldGroup>
           </form>
