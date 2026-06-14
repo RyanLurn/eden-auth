@@ -17,11 +17,9 @@ import {
 } from "@/components/ui/card";
 import { Route as DashboardRoute } from "@/routes/_authenticated/dashboard";
 import { redirectSearchParamValidator } from "@/lib/validators";
-import { buttonVariants } from "@/components/ui/button";
 import { useAppForm } from "@/components/form/hook";
 import { authClient } from "@/features/auth/client";
 import { FieldGroup } from "@/components/ui/field";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/(auth)/sign-in/")({
   validateSearch: redirectSearchParamValidator,
