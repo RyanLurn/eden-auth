@@ -168,6 +168,9 @@ function SignInPage() {
             <span>Don&apos;t have an account?</span>{" "}
             <Link
               className="underline underline-offset-2 hover:text-primary"
+              search={{
+                redirect,
+              }}
               disabled={isSubmitting}
               to="/sign-up"
             >
