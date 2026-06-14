@@ -7,6 +7,10 @@ import {
   sessionTable,
   accountTable,
 } from "@/db/schema/tables/auth";
+import {
+  MAX_PASSWORD_LENGTH,
+  MIN_PASSWORD_LENGTH,
+} from "@/features/auth/constants";
 import { userTable } from "@/db/schema/tables/user";
 import { serverEnv } from "@/lib/env/server";
 import { db } from "@/db";
@@ -25,6 +29,8 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    minPasswordLength: MIN_PASSWORD_LENGTH,
+    maxPasswordLength: MAX_PASSWORD_LENGTH,
   },
   advanced: {
     database: {
