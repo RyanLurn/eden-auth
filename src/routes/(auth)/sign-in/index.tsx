@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useStore } from "@tanstack/react-form";
 import { toast } from "sonner";
 
 import {
@@ -51,6 +52,11 @@ function SignInPage() {
     },
   });
 
+  const isSubmitting = useStore(
+    signInForm.store,
+    (state) => state.isSubmitting
+  );
+
   return (
     <div className="flex size-full flex-col items-center justify-center">
       <Card className="w-full sm:max-w-sm">
@@ -80,6 +86,7 @@ function SignInPage() {
                 {(appField) => (
                   <appField.TextField
                     placeholder="youremail@example.com"
+                    disabled={isSubmitting}
                     label="Email"
                     type="email"
                   />
@@ -95,6 +102,7 @@ function SignInPage() {
                 {(appField) => (
                   <appField.TextField
                     placeholder="************"
+                    disabled={isSubmitting}
                     label="Password"
                     type="password"
                   />
@@ -109,6 +117,7 @@ function SignInPage() {
               >
                 {(appField) => (
                   <appField.CheckField
+                    disabled={isSubmitting}
                     className="rounded-sm"
                     label="Remember me"
                   />
