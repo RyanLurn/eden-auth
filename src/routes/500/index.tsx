@@ -1,13 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { z } from "zod";
 
 import { INTERNAL_SERVER_ERROR_MESSAGE } from "@/error/constants";
+import { redirectSearchParamValidator } from "@/lib/validators";
 import { buttonVariants } from "@/components/ui/button";
 
 export const Route = createFileRoute("/500/")({
-  validateSearch: z.object({
-    redirect: z.string().min(1).optional().catch(undefined),
-  }),
+  validateSearch: redirectSearchParamValidator,
   component: InternalServerErrorPage,
 });
 
