@@ -62,15 +62,18 @@ function SignUpPage() {
       if (error) {
         const fallbackErrorMessage =
           "Failed to sign up. Please try again later or contact support.";
+
         if (error.code) {
           switch (error.code) {
-            case "INVALID_EMAIL_OR_PASSWORD": {
-              toast.error(error.message ?? "Invalid email or password");
-              break;
-            }
-            case "FAILED_TO_CREATE_SESSION": {
-              // We use the fallback message here because the message for this code isn't very user-friendly
-              toast.error(fallbackErrorMessage);
+            case "PASSWORD_TOO_SHORT": // falls through
+            case "PASSWORD_TOO_LONG": // falls through
+            case "INVALID_PASSWORD": {
+              formApi.setFieldMeta("password", (prev) => ({
+                ...prev,
+                errorMap: {
+                  onServer: [{ message: error.message }],
+                },
+              }));
               break;
             }
             case "INVALID_EMAIL": {
@@ -81,9 +84,6 @@ function SignUpPage() {
                 },
               }));
               break;
-            }
-            default: {
-              toast.error(error.message ?? fallbackErrorMessage);
             }
           }
         } else {
