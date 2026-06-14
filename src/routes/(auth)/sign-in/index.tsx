@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 
 import {
@@ -17,9 +17,11 @@ import {
 } from "@/components/ui/card";
 import { Route as DashboardRoute } from "@/routes/_authenticated/dashboard";
 import { redirectSearchParamValidator } from "@/lib/validators";
+import { buttonVariants } from "@/components/ui/button";
 import { useAppForm } from "@/components/form/hook";
 import { authClient } from "@/features/auth/client";
 import { FieldGroup } from "@/components/ui/field";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/(auth)/sign-in/")({
   validateSearch: redirectSearchParamValidator,
@@ -55,7 +57,7 @@ function SignInPage() {
     <div className="flex size-full flex-col items-center justify-center">
       <Card className="w-full sm:max-w-sm">
         <CardHeader>
-          <CardTitle>Sign in</CardTitle>
+          <CardTitle className="text-xl">Sign in</CardTitle>
           <CardDescription>
             Enter your credentials below to sign in.
           </CardDescription>
@@ -117,7 +119,7 @@ function SignInPage() {
             </FieldGroup>
           </form>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex-col gap-y-2">
           <signInForm.AppForm>
             {/* Submit button */}
             <signInForm.SubmitButton
@@ -126,6 +128,15 @@ function SignInPage() {
               className="w-full"
             />
           </signInForm.AppForm>
+          <div className="w-full text-center text-muted-foreground">
+            <span>Don&apos;t have an account?</span>{" "}
+            <Link
+              className="underline underline-offset-2 hover:text-primary"
+              to="/sign-up"
+            >
+              Sign up
+            </Link>
+          </div>
         </CardFooter>
       </Card>
     </div>
