@@ -163,6 +163,7 @@ function SignUpPage() {
               search={{
                 redirect,
               }}
+              disabled={isSubmitting}
               to="/sign-in"
             >
               Sign in
