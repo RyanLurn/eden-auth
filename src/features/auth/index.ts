@@ -11,6 +11,7 @@ import {
   MAX_PASSWORD_LENGTH,
   MIN_PASSWORD_LENGTH,
 } from "@/features/auth/constants";
+import { hashPassword } from "@/features/auth/password";
 import { userTable } from "@/db/schema/tables/user";
 import { serverEnv } from "@/lib/env/server";
 import { db } from "@/db";
@@ -31,6 +32,9 @@ export const auth = betterAuth({
     enabled: true,
     minPasswordLength: MIN_PASSWORD_LENGTH,
     maxPasswordLength: MAX_PASSWORD_LENGTH,
+    password: {
+      hash: hashPassword,
+    },
   },
   advanced: {
     database: {
