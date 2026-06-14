@@ -3,7 +3,7 @@ import type { ComponentProps } from "react";
 import type { StrictOmit } from "@/types/utils";
 
 import { FieldError, FieldLabel, Field } from "@/components/ui/field";
-import { useFieldContext } from "@/components/form/hook";
+import { useFieldContext } from "@/components/form/contexts";
 import { Input } from "@/components/ui/input";
 
 export function TextField(
