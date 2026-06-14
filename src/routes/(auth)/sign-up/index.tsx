@@ -58,7 +58,7 @@ function SignUpPage() {
         email,
         password,
         // This is a callback for email verification, not for this function's success
-        callbackURL: redirect ? redirect : OnboardRoute.to,
+        callbackURL: OnboardRoute.to,
       });
 
       if (error) {
