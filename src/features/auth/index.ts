@@ -23,6 +23,9 @@ export const auth = betterAuth({
       verification: verificationTable,
     },
   }),
+  emailAndPassword: {
+    enabled: true,
+  },
   advanced: {
     database: {
       // Let Drizzle ORM generate the id.
