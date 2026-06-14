@@ -42,8 +42,13 @@ function SignInPage() {
       onSubmit: signInValidator,
     },
     onSubmit: async ({ value, formApi }) => {
+      // The signInValidator transforms email.
+      // However, TanStack Form doesn't use the output of validators for the value.
+      // So, we need to parse it again here to get the transformed email.
+      const parsedValue = signInValidator.parse(value);
+
       const { error } = await authClient.signIn.email({
-        ...value,
+        ...parsedValue,
         callbackURL: redirect ? redirect : DashboardRoute.to,
       });
 
