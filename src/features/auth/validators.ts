@@ -24,6 +24,10 @@ export const passwordValidator = z
   .min(MIN_PASSWORD_LENGTH, "Password is too short.")
   .max(MAX_PASSWORD_LENGTH, "Password is too long.");
 
+export const confirmPasswordValidator = z
+  .string()
+  .min(1, "Please confirm your password.");
+
 export const rememberMeValidator = z.boolean();
 
 export const signInValidator = z.object({
@@ -37,7 +41,7 @@ export const signUpValidator = z
     name: nameValidator,
     email: emailValidator,
     password: passwordValidator,
-    confirmPassword: z.string(),
+    confirmPassword: confirmPasswordValidator,
   })
   .refine(
     (arg) => arg.confirmPassword !== arg.password,
