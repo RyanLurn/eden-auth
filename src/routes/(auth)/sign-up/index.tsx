@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useRouter, Link } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-form";
 import { toast } from "sonner";
 
@@ -35,6 +35,8 @@ export const Route = createFileRoute("/(auth)/sign-up/")({
 
 function SignUpPage() {
   const { redirect } = Route.useSearch();
+
+  const router = useRouter();
 
   const signUpForm = useAppForm({
     formId: "sign-up-form",
@@ -89,8 +91,13 @@ function SignUpPage() {
             }
           }
         }
+
         toast.error(fallbackErrorMessage);
+        return;
       }
+
+      // For when we require email verification
+      await router.navigate({ to: "/verify-email" });
     },
   });
 
