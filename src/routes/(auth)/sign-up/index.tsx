@@ -75,7 +75,7 @@ function SignUpPage() {
                   onServer: [{ message: error.message }],
                 },
               }));
-              break;
+              return;
             }
             case "INVALID_EMAIL": {
               formApi.setFieldMeta("email", (prev) => ({
@@ -84,12 +84,11 @@ function SignUpPage() {
                   onServer: [{ message: error.message }],
                 },
               }));
-              break;
+              return;
             }
           }
-        } else {
-          toast.error(fallbackErrorMessage);
         }
+        toast.error(fallbackErrorMessage);
       }
     },
   });

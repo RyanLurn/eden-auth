@@ -44,7 +44,7 @@ export const signUpValidator = z
     password: passwordValidator,
     confirmPassword: confirmPasswordValidator,
   })
-  .refine(
-    (arg) => arg.confirmPassword !== arg.password,
-    PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE
-  );
+  .refine((arg) => arg.confirmPassword === arg.password, {
+    error: PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE,
+    path: ["confirmPassword"],
+  });
