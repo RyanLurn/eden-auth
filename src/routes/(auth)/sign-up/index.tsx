@@ -3,6 +3,12 @@ import { useStore } from "@tanstack/react-form";
 import { toast } from "sonner";
 
 import {
+  confirmPasswordValidator,
+  passwordValidator,
+  signUpValidator,
+  emailValidator,
+} from "@/features/auth/validators";
+import {
   CardDescription,
   CardContent,
   CardFooter,
@@ -11,13 +17,11 @@ import {
   Card,
 } from "@/components/ui/card";
 import {
-  passwordValidator,
-  signUpValidator,
-  emailValidator,
-} from "@/features/auth/validators";
+  PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE,
+  MIN_PASSWORD_LENGTH,
+} from "@/features/auth/constants";
 import { Route as DashboardRoute } from "@/routes/_authenticated/dashboard";
 import { redirectSearchParamValidator } from "@/lib/validators";
-import { MIN_PASSWORD_LENGTH } from "@/features/auth/constants";
 import { useAppForm } from "@/components/form/hook";
 import { authClient } from "@/features/auth/client";
 import { FieldGroup } from "@/components/ui/field";
@@ -140,6 +144,37 @@ function SignUpPage() {
                     placeholder={"*".repeat(MIN_PASSWORD_LENGTH)}
                     disabled={isSubmitting}
                     label="Password"
+                    type="password"
+                  />
+                )}
+              </signUpForm.AppField>
+              {/* Confirm password input field */}
+              <signUpForm.AppField
+                validators={{
+                  onChangeListenTo: ["password"],
+                  onChange: ({ value, fieldApi }) => {
+                    const parseResult =
+                      confirmPasswordValidator.safeParse(value);
+                    if (!parseResult.success) {
+                      return parseResult.error.message;
+                    }
+
+                    if (
+                      parseResult.data !==
+                      fieldApi.form.getFieldValue("password")
+                    ) {
+                      return PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE;
+                    }
+                    return undefined;
+                  },
+                }}
+                name="confirmPassword"
+              >
+                {(appField) => (
+                  <appField.TextField
+                    placeholder={"*".repeat(MIN_PASSWORD_LENGTH)}
+                    label="Confirm password"
+                    disabled={isSubmitting}
                     type="password"
                   />
                 )}

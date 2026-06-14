@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import {
+  PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE,
   MIN_PASSWORD_LENGTH,
   MAX_PASSWORD_LENGTH,
 } from "@/features/auth/constants";
@@ -45,5 +46,5 @@ export const signUpValidator = z
   })
   .refine(
     (arg) => arg.confirmPassword !== arg.password,
-    "Passwords do not match."
+    PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE
   );
