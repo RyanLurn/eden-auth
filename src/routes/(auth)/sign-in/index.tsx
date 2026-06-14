@@ -51,6 +51,7 @@ function SignInPage() {
       const { error } = await authClient.signIn.email({
         ...parsedValue,
         // Unlike the signUp method, this callback url actually applies to both email verification and this method's success.
+        // Which means it will automatically redirects the user without us calling `router.navigate` manually.
         callbackURL: redirect ? redirect : DashboardRoute.to,
       });
 

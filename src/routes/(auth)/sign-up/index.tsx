@@ -59,7 +59,8 @@ function SignUpPage() {
         name,
         email,
         password,
-        // This is a callback for email verification, not for this method's success
+        // This is a callback for email verification, not for this method's success.
+        // Which means that we need to use `router.navigate` to navigate the user on success.
         callbackURL: OnboardRoute.to,
       });
 
@@ -96,7 +97,7 @@ function SignUpPage() {
         return;
       }
 
-      // For when we require email verification
+      // For when we require email verification.
       await router.navigate({ to: "/verify-email" });
     },
   });
