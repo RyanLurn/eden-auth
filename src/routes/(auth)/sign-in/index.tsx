@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/card";
 import { Route as DashboardRoute } from "@/routes/_authenticated/dashboard";
 import { redirectSearchParamValidator } from "@/lib/validators";
+import { MIN_PASSWORD_LENGTH } from "@/features/auth/constants";
 import { useAppForm } from "@/components/form/hook";
 import { authClient } from "@/features/auth/client";
 import { FieldGroup } from "@/components/ui/field";
@@ -129,7 +130,7 @@ function SignInPage() {
               >
                 {(appField) => (
                   <appField.TextField
-                    placeholder="************"
+                    placeholder={"*".repeat(MIN_PASSWORD_LENGTH)}
                     disabled={isSubmitting}
                     label="Password"
                     type="password"
