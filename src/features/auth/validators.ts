@@ -24,10 +24,12 @@ export const passwordValidator = z
   .min(MIN_PASSWORD_LENGTH, "Password is too short.")
   .max(MAX_PASSWORD_LENGTH, "Password is too long.");
 
+export const rememberMeValidator = z.boolean();
+
 export const signInValidator = z.object({
   email: emailValidator,
   password: passwordValidator,
-  rememberMe: z.boolean(),
+  rememberMe: rememberMeValidator,
 });
 
 export const signUpValidator = z
