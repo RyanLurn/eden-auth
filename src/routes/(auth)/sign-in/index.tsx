@@ -40,14 +40,42 @@ function SignInPage() {
     validators: {
       onSubmit: signInValidator,
     },
-    onSubmit: async ({ value }) => {
+    onSubmit: async ({ value, formApi }) => {
       const { error } = await authClient.signIn.email({
         ...value,
         callbackURL: redirect ? redirect : DashboardRoute.to,
       });
 
       if (error) {
-        toast.error(error.message ?? "Failed to sign in.");
+        const fallbackErrorMessage =
+          "Failed to sign in. Please try again later or contact support.";
+        if (error.code) {
+          switch (error.code) {
+            case "INVALID_EMAIL_OR_PASSWORD": {
+              toast.error(error.message ?? "Invalid email or password");
+              break;
+            }
+            case "FAILED_TO_CREATE_SESSION": {
+              // We use the fallback message here because the message for this code isn't very user-friendly
+              toast.error(fallbackErrorMessage);
+              break;
+            }
+            case "INVALID_EMAIL": {
+              formApi.setFieldMeta("email", (prev) => ({
+                ...prev,
+                errorMap: {
+                  onServer: [{ message: error.message }],
+                },
+              }));
+              break;
+            }
+            default: {
+              toast.error(error.message ?? fallbackErrorMessage);
+            }
+          }
+        } else {
+          toast.error(fallbackErrorMessage);
+        }
       }
     },
   });
