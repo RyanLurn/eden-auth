@@ -15,7 +15,7 @@ import {
   CardTitle,
   Card,
 } from "@/components/ui/card";
-import { Route as AccountRoute } from "@/routes/_authenticated/account";
+import { Route as DashboardRoute } from "@/routes/_authenticated/dashboard";
 import { redirectSearchParamValidator } from "@/lib/validators";
 import { useAppForm } from "@/components/form/hook";
 import { authClient } from "@/features/auth/client";
@@ -42,7 +42,7 @@ function SignInPage() {
     onSubmit: async ({ value }) => {
       const { error } = await authClient.signIn.email({
         ...value,
-        callbackURL: redirect ? redirect : AccountRoute.to,
+        callbackURL: redirect ? redirect : DashboardRoute.to,
       });
 
       if (error) {
