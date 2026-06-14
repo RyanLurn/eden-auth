@@ -7,6 +7,7 @@ import {
   passwordValidator,
   signUpValidator,
   emailValidator,
+  nameValidator,
 } from "@/features/auth/validators";
 import {
   CardDescription,
@@ -116,6 +117,22 @@ function SignUpPage() {
             id={signUpForm.formId}
           >
             <FieldGroup>
+              {/* Name input field */}
+              <signUpForm.AppField
+                validators={{
+                  onChange: nameValidator,
+                }}
+                name="name"
+              >
+                {(appField) => (
+                  <appField.TextField
+                    placeholder="Your Name"
+                    disabled={isSubmitting}
+                    label="Name"
+                    type="text"
+                  />
+                )}
+              </signUpForm.AppField>
               {/* Email input field */}
               <signUpForm.AppField
                 validators={{
@@ -165,6 +182,7 @@ function SignUpPage() {
                     ) {
                       return PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE;
                     }
+
                     return undefined;
                   },
                 }}
