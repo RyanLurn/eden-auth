@@ -22,6 +22,7 @@ import { MIN_PASSWORD_LENGTH } from "@/features/auth/constants";
 import { useAppForm } from "@/components/form/hook";
 import { authClient } from "@/features/auth/client";
 import { FieldGroup } from "@/components/ui/field";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/(auth)/sign-in/")({
   validateSearch: redirectSearchParamValidator,
@@ -164,7 +165,11 @@ function SignInPage() {
           <div className="w-full text-center text-muted-foreground">
             <span>Don&apos;t have an account?</span>{" "}
             <Link
-              className="underline underline-offset-2 hover:text-primary"
+              className={cn(
+                isSubmitting
+                  ? ""
+                  : "underline underline-offset-2 hover:text-primary"
+              )}
               search={{
                 redirect,
               }}

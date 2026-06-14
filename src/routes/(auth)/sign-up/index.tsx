@@ -26,6 +26,7 @@ import { redirectSearchParamValidator } from "@/lib/validators";
 import { useAppForm } from "@/components/form/hook";
 import { authClient } from "@/features/auth/client";
 import { FieldGroup } from "@/components/ui/field";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/(auth)/sign-up/")({
   validateSearch: redirectSearchParamValidator,
@@ -212,7 +213,11 @@ function SignUpPage() {
           <div className="w-full text-center text-muted-foreground">
             <span>Already have an account?</span>{" "}
             <Link
-              className="underline underline-offset-2 hover:text-primary"
+              className={cn(
+                isSubmitting
+                  ? ""
+                  : "underline underline-offset-2 hover:text-primary"
+              )}
               search={{
                 redirect,
               }}
