@@ -75,8 +75,12 @@ function SignInPage() {
             }
           }
         }
+
         toast.error(fallbackErrorMessage);
+        return;
       }
+
+      toast.success("Welcome back!");
     },
   });
 
