@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from "./routes/__root";
 import { Route as AuthenticatedRouteRouteImport } from "./routes/_authenticated/route";
 import { Route as IndexRouteImport } from "./routes/index";
 import { Route as R500IndexRouteImport } from "./routes/500/index";
+import { Route as AuthenticatedOnboardIndexRouteImport } from "./routes/_authenticated/onboard/index";
 import { Route as AuthenticatedDashboardIndexRouteImport } from "./routes/_authenticated/dashboard/index";
 import { Route as AuthenticatedAccountIndexRouteImport } from "./routes/_authenticated/account/index";
 import { Route as authSignUpIndexRouteImport } from "./routes/(auth)/sign-up/index";
@@ -32,6 +33,12 @@ const R500IndexRoute = R500IndexRouteImport.update({
   path: "/500/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const AuthenticatedOnboardIndexRoute =
+  AuthenticatedOnboardIndexRouteImport.update({
+    id: "/onboard/",
+    path: "/onboard/",
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any);
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexRouteImport.update({
     id: "/dashboard/",
@@ -68,6 +75,7 @@ export interface FileRoutesByFullPath {
   "/sign-up/": typeof authSignUpIndexRoute;
   "/account/": typeof AuthenticatedAccountIndexRoute;
   "/dashboard/": typeof AuthenticatedDashboardIndexRoute;
+  "/onboard/": typeof AuthenticatedOnboardIndexRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
@@ -77,6 +85,7 @@ export interface FileRoutesByTo {
   "/sign-up": typeof authSignUpIndexRoute;
   "/account": typeof AuthenticatedAccountIndexRoute;
   "/dashboard": typeof AuthenticatedDashboardIndexRoute;
+  "/onboard": typeof AuthenticatedOnboardIndexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
@@ -88,6 +97,7 @@ export interface FileRoutesById {
   "/(auth)/sign-up/": typeof authSignUpIndexRoute;
   "/_authenticated/account/": typeof AuthenticatedAccountIndexRoute;
   "/_authenticated/dashboard/": typeof AuthenticatedDashboardIndexRoute;
+  "/_authenticated/onboard/": typeof AuthenticatedOnboardIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
@@ -98,7 +108,8 @@ export interface FileRouteTypes {
     | "/sign-in/"
     | "/sign-up/"
     | "/account/"
-    | "/dashboard/";
+    | "/dashboard/"
+    | "/onboard/";
   fileRoutesByTo: FileRoutesByTo;
   to:
     | "/"
@@ -107,7 +118,8 @@ export interface FileRouteTypes {
     | "/sign-in"
     | "/sign-up"
     | "/account"
-    | "/dashboard";
+    | "/dashboard"
+    | "/onboard";
   id:
     | "__root__"
     | "/"
@@ -117,7 +129,8 @@ export interface FileRouteTypes {
     | "/(auth)/sign-in/"
     | "/(auth)/sign-up/"
     | "/_authenticated/account/"
-    | "/_authenticated/dashboard/";
+    | "/_authenticated/dashboard/"
+    | "/_authenticated/onboard/";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
@@ -151,6 +164,13 @@ declare module "@tanstack/react-router" {
       fullPath: "/500/";
       preLoaderRoute: typeof R500IndexRouteImport;
       parentRoute: typeof rootRouteImport;
+    };
+    "/_authenticated/onboard/": {
+      id: "/_authenticated/onboard/";
+      path: "/onboard";
+      fullPath: "/onboard/";
+      preLoaderRoute: typeof AuthenticatedOnboardIndexRouteImport;
+      parentRoute: typeof AuthenticatedRouteRoute;
     };
     "/_authenticated/dashboard/": {
       id: "/_authenticated/dashboard/";
@@ -193,11 +213,13 @@ declare module "@tanstack/react-router" {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountIndexRoute: typeof AuthenticatedAccountIndexRoute;
   AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute;
+  AuthenticatedOnboardIndexRoute: typeof AuthenticatedOnboardIndexRoute;
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccountIndexRoute: AuthenticatedAccountIndexRoute,
   AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+  AuthenticatedOnboardIndexRoute: AuthenticatedOnboardIndexRoute,
 };
 
 const AuthenticatedRouteRouteWithChildren =

@@ -21,7 +21,7 @@ import {
   PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE,
   MIN_PASSWORD_LENGTH,
 } from "@/features/auth/constants";
-import { Route as DashboardRoute } from "@/routes/_authenticated/dashboard";
+import { Route as OnboardRoute } from "@/routes/_authenticated/onboard";
 import { redirectSearchParamValidator } from "@/lib/validators";
 import { useAppForm } from "@/components/form/hook";
 import { authClient } from "@/features/auth/client";
@@ -57,7 +57,8 @@ function SignUpPage() {
         name,
         email,
         password,
-        callbackURL: redirect ? redirect : DashboardRoute.to,
+        // This is a callback for email verification, not for this function's success
+        callbackURL: redirect ? redirect : OnboardRoute.to,
       });
 
       if (error) {
