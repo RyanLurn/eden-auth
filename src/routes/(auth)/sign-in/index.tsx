@@ -58,12 +58,7 @@ function SignInPage() {
         if (error.code) {
           switch (error.code) {
             case "INVALID_EMAIL_OR_PASSWORD": {
-              toast.error(error.message ?? "Invalid email or password");
-              break;
-            }
-            case "FAILED_TO_CREATE_SESSION": {
-              // We use the fallback message here because the message for this code isn't very user-friendly
-              toast.error(fallbackErrorMessage);
+              toast.error("Invalid email or password");
               break;
             }
             case "INVALID_EMAIL": {
@@ -74,9 +69,6 @@ function SignInPage() {
                 },
               }));
               break;
-            }
-            default: {
-              toast.error(error.message ?? fallbackErrorMessage);
             }
           }
         } else {
