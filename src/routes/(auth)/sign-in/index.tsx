@@ -17,8 +17,8 @@ import {
   Card,
 } from "@/components/ui/card";
 import { Route as DashboardRoute } from "@/routes/_authenticated/dashboard";
+import { MIN_PASSWORD_LENGTH } from "@/features/auth/utils/constants";
 import { redirectSearchParamValidator } from "@/lib/validators";
-import { MIN_PASSWORD_LENGTH } from "@/features/auth/constants";
 import { useAppForm } from "@/components/form/hook";
 import { authClient } from "@/features/auth/client";
 import { FieldGroup } from "@/components/ui/field";

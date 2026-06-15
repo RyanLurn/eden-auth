@@ -20,7 +20,7 @@ import {
 import {
   PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE,
   MIN_PASSWORD_LENGTH,
-} from "@/features/auth/constants";
+} from "@/features/auth/utils/constants";
 import { Route as OnboardRoute } from "@/routes/_authenticated/onboard";
 import { redirectSearchParamValidator } from "@/lib/validators";
 import { useAppForm } from "@/components/form/hook";

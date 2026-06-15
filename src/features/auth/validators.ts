@@ -4,7 +4,7 @@ import {
   PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE,
   MIN_PASSWORD_LENGTH,
   MAX_PASSWORD_LENGTH,
-} from "@/features/auth/constants";
+} from "@/features/auth/utils/constants";
 
 export const nameValidator = z
   .string()
