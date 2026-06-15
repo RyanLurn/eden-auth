@@ -11,7 +11,7 @@ import {
   MAX_PASSWORD_LENGTH,
   MIN_PASSWORD_LENGTH,
 } from "@/features/auth/constants";
-import { verifyPassword, hashPassword } from "@/features/auth/password";
+import { verifyPassword, hashPassword } from "@/features/auth/utils/password";
 import { userTable } from "@/db/schema/tables/user";
 import { serverEnv } from "@/lib/env/server";
 import { db } from "@/db";
