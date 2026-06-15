@@ -21,10 +21,9 @@ import {
   PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE,
   MIN_PASSWORD_LENGTH,
 } from "@/features/auth/utils/constants";
-import { Route as OnboardRoute } from "@/routes/_authenticated/onboard";
+import { signUpFromClient } from "@/features/auth/operations/sign-up-from-client";
 import { redirectSearchParamValidator } from "@/lib/validators";
 import { useAppForm } from "@/components/form/hook";
-import { authClient } from "@/features/auth/client";
 import { FieldGroup } from "@/components/ui/field";
 import { cn } from "@/lib/utils";
 
@@ -55,45 +54,20 @@ function SignUpPage() {
       // So, we need to parse it again here to get the transformed name and email.
       const { name, email, password } = signUpValidator.parse(value);
 
-      const { error } = await authClient.signUp.email({
-        name,
-        email,
-        password,
-        // This is a callback for email verification, not for this method's success.
-        // Which means that we need to use `router.navigate` to navigate the user on success.
-        callbackURL: OnboardRoute.to,
-      });
+      const signUpResult = await signUpFromClient({ name, email, password });
 
-      if (error) {
-        const fallbackErrorMessage =
-          "Failed to sign up. Please try again later or contact support.";
-
-        if (error.code) {
-          switch (error.code) {
-            case "PASSWORD_TOO_SHORT": // falls through
-            case "PASSWORD_TOO_LONG": // falls through
-            case "INVALID_PASSWORD": {
-              formApi.setFieldMeta("password", (prev) => ({
-                ...prev,
-                errorMap: {
-                  onServer: [{ message: error.message }],
-                },
-              }));
-              return;
-            }
-            case "INVALID_EMAIL": {
-              formApi.setFieldMeta("email", (prev) => ({
-                ...prev,
-                errorMap: {
-                  onServer: [{ message: error.message }],
-                },
-              }));
-              return;
-            }
-          }
+      if (!signUpResult.success) {
+        const error = signUpResult.error;
+        if (error.code === "VALIDATION_ERROR") {
+          formApi.setFieldMeta(error.entity, (prev) => ({
+            ...prev,
+            errorMap: {
+              onServer: [{ message: error.message }],
+            },
+          }));
+          return;
         }
-
-        toast.error(fallbackErrorMessage);
+        toast.error(error.message);
         return;
       }
 
