@@ -117,7 +117,7 @@ function FieldTitle({ className, ...props }: ComponentProps<"div">) {
         "flex w-fit items-center gap-2 text-sm font-medium group-data-[disabled=true]/field:opacity-50",
         className
       )}
-      data-slot="field-label"
+      data-slot="field-title"
       {...props}
     />
   );
