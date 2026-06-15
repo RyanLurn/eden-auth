@@ -16,11 +16,10 @@ import {
   CardTitle,
   Card,
 } from "@/components/ui/card";
-import { Route as DashboardRoute } from "@/routes/_authenticated/dashboard";
+import { signInFromClient } from "@/features/auth/operations/sign-in.client";
 import { MIN_PASSWORD_LENGTH } from "@/features/auth/utils/constants";
 import { redirectSearchParamValidator } from "@/lib/validators";
 import { useAppForm } from "@/components/form/hook";
-import { authClient } from "@/features/auth/client";
 import { FieldGroup } from "@/components/ui/field";
 import { cn } from "@/lib/utils";
 
@@ -48,35 +47,20 @@ function SignInPage() {
       // So, we need to parse it again here to get the transformed email.
       const parsedValue = signInValidator.parse(value);
 
-      const { error } = await authClient.signIn.email({
-        ...parsedValue,
-        // Unlike the signUp method, this callback url actually applies to both email verification and this method's success.
-        // Which means it will automatically redirects the user without us calling `router.navigate` manually.
-        callbackURL: redirect ? redirect : DashboardRoute.to,
-      });
+      const signInResult = await signInFromClient({ ...parsedValue, redirect });
 
-      if (error) {
-        const fallbackErrorMessage =
-          "Failed to sign in. Please try again later or contact support.";
-        if (error.code) {
-          switch (error.code) {
-            case "INVALID_EMAIL_OR_PASSWORD": {
-              toast.error("Invalid email or password");
-              return;
-            }
-            case "INVALID_EMAIL": {
-              formApi.setFieldMeta("email", (prev) => ({
-                ...prev,
-                errorMap: {
-                  onServer: [{ message: error.message }],
-                },
-              }));
-              return;
-            }
-          }
+      if (!signInResult.success) {
+        const error = signInResult.error;
+        if (error.code === "VALIDATION_ERROR") {
+          formApi.setFieldMeta(error.entity, (prev) => ({
+            ...prev,
+            errorMap: {
+              onServer: [{ message: error.message }],
+            },
+          }));
+          return;
         }
-
-        toast.error(fallbackErrorMessage);
+        toast.error(error.message);
         return;
       }
 
