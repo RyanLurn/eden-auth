@@ -1,3 +1,5 @@
+import type { SentMessageInfo } from "nodemailer/lib/smtp-transport";
+
 import { createServerOnlyFn } from "@tanstack/react-start";
 
 import type { Email } from "@/features/email/types";
@@ -7,12 +9,12 @@ import { transporter } from "@/features/email/transporter.server";
 import { UnexpectedError } from "@/error/classes/unexpected";
 
 export const sendEmail = createServerOnlyFn(
-  async (email: Email): Promise<Result<null, UnexpectedError>> => {
+  async (email: Email): Promise<Result<SentMessageInfo, UnexpectedError>> => {
     try {
-      await transporter.sendMail(email);
+      const info = await transporter.sendMail(email);
       return {
         success: true,
-        data: null,
+        data: info,
       };
     } catch (error) {
       return {
