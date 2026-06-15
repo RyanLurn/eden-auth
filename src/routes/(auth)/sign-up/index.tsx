@@ -21,7 +21,7 @@ import {
   PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE,
   MIN_PASSWORD_LENGTH,
 } from "@/features/auth/utils/constants";
-import { signUpFromClient } from "@/features/auth/operations/sign-up-from-client";
+import { signUpFromClient } from "@/features/auth/operations/client-only/sign-up";
 import { redirectSearchParamValidator } from "@/lib/validators";
 import { useAppForm } from "@/components/form/hook";
 import { FieldGroup } from "@/components/ui/field";
