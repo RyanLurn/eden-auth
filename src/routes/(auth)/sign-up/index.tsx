@@ -1,56 +1,63 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useRouter, Link } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-form";
 import { toast } from "sonner";
 
 import {
-  rememberMeValidator,
+  confirmPasswordValidator,
   passwordValidator,
-  signInValidator,
+  signUpValidator,
   emailValidator,
+  nameValidator,
 } from "@/features/auth/utils/validators";
 import {
   CardDescription,
   CardContent,
-  CardHeader,
   CardFooter,
+  CardHeader,
   CardTitle,
   Card,
 } from "@/components/ui/card";
-import { signInFromClient } from "@/features/auth/operations/sign-in-from-client";
-import { MIN_PASSWORD_LENGTH } from "@/features/auth/utils/constants";
+import {
+  PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE,
+  MIN_PASSWORD_LENGTH,
+} from "@/features/auth/utils/constants";
+import { signUpFromClient } from "@/features/auth/operations/sign-up-from-client";
 import { redirectSearchParamValidator } from "@/lib/validators";
 import { useAppForm } from "@/components/form/hook";
 import { FieldGroup } from "@/components/ui/field";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/(auth)/sign-in/")({
+export const Route = createFileRoute("/(auth)/sign-up/")({
   validateSearch: redirectSearchParamValidator,
-  component: SignInPage,
+  component: SignUpPage,
 });
 
-function SignInPage() {
+function SignUpPage() {
   const { redirect } = Route.useSearch();
 
-  const signInForm = useAppForm({
-    formId: "sign-in-form",
+  const router = useRouter();
+
+  const signUpForm = useAppForm({
+    formId: "sign-up-form",
     defaultValues: {
+      name: "",
       email: "",
       password: "",
-      rememberMe: true,
+      confirmPassword: "",
     },
     validators: {
-      onSubmit: signInValidator,
+      onSubmit: signUpValidator,
     },
     onSubmit: async ({ value, formApi }) => {
-      // The signInValidator transforms email.
+      // The signUpValidator transforms name and email.
       // However, TanStack Form doesn't use the output of validators for the value.
-      // So, we need to parse it again here to get the transformed email.
-      const parsedValue = signInValidator.parse(value);
+      // So, we need to parse it again here to get the transformed name and email.
+      const { name, email, password } = signUpValidator.parse(value);
 
-      const signInResult = await signInFromClient({ ...parsedValue, redirect });
+      const signUpResult = await signUpFromClient({ name, email, password });
 
-      if (!signInResult.success) {
-        const error = signInResult.error;
+      if (!signUpResult.success) {
+        const error = signUpResult.error;
         if (error.code === "VALIDATION_ERROR") {
           formApi.setFieldMeta(error.entity, (prev) => ({
             ...prev,
@@ -64,12 +71,13 @@ function SignInPage() {
         return;
       }
 
-      toast.success("Welcome back!");
+      // For when we require email verification.
+      await router.navigate({ to: "/verify-email" });
     },
   });
 
   const isSubmitting = useStore(
-    signInForm.store,
+    signUpForm.store,
     (state) => state.isSubmitting
   );
 
@@ -77,9 +85,9 @@ function SignInPage() {
     <div className="flex size-full flex-col items-center justify-center">
       <Card className="w-full sm:max-w-sm">
         <CardHeader>
-          <CardTitle className="text-xl">Sign in</CardTitle>
+          <CardTitle className="text-xl">Sign up</CardTitle>
           <CardDescription>
-            Enter your credentials below to sign in.
+            Enter your information below to create an account.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -87,13 +95,29 @@ function SignInPage() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              void signInForm.handleSubmit();
+              void signUpForm.handleSubmit();
             }}
-            id={signInForm.formId}
+            id={signUpForm.formId}
           >
             <FieldGroup>
+              {/* Name input field */}
+              <signUpForm.AppField
+                validators={{
+                  onChange: nameValidator,
+                }}
+                name="name"
+              >
+                {(appField) => (
+                  <appField.TextField
+                    placeholder="Your Name"
+                    disabled={isSubmitting}
+                    label="Name"
+                    type="text"
+                  />
+                )}
+              </signUpForm.AppField>
               {/* Email input field */}
-              <signInForm.AppField
+              <signUpForm.AppField
                 validators={{
                   onChange: emailValidator,
                 }}
@@ -107,9 +131,9 @@ function SignInPage() {
                     type="email"
                   />
                 )}
-              </signInForm.AppField>
+              </signUpForm.AppField>
               {/* Password input field */}
-              <signInForm.AppField
+              <signUpForm.AppField
                 validators={{
                   onChange: passwordValidator,
                 }}
@@ -123,36 +147,55 @@ function SignInPage() {
                     type="password"
                   />
                 )}
-              </signInForm.AppField>
-              {/* Remember me checkbox */}
-              <signInForm.AppField
+              </signUpForm.AppField>
+              {/* Confirm password input field */}
+              <signUpForm.AppField
                 validators={{
-                  onChange: rememberMeValidator,
+                  onChangeListenTo: ["password"],
+                  onChange: ({ value, fieldApi }) => {
+                    const parseResult =
+                      confirmPasswordValidator.safeParse(value);
+                    if (!parseResult.success) {
+                      return parseResult.error.issues;
+                    }
+
+                    if (
+                      parseResult.data !==
+                      fieldApi.form.getFieldValue("password")
+                    ) {
+                      return [
+                        { message: PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE },
+                      ];
+                    }
+
+                    return undefined;
+                  },
                 }}
-                name="rememberMe"
+                name="confirmPassword"
               >
                 {(appField) => (
-                  <appField.CheckField
+                  <appField.TextField
+                    placeholder={"*".repeat(MIN_PASSWORD_LENGTH)}
+                    label="Confirm password"
                     disabled={isSubmitting}
-                    className="rounded-sm"
-                    label="Remember me"
+                    type="password"
                   />
                 )}
-              </signInForm.AppField>
+              </signUpForm.AppField>
             </FieldGroup>
           </form>
         </CardContent>
         <CardFooter className="flex-col gap-y-2">
-          <signInForm.AppForm>
+          <signUpForm.AppForm>
             {/* Submit button */}
-            <signInForm.SubmitButton
-              submittingText="Signing in..."
-              submitText="Sign in"
+            <signUpForm.SubmitButton
+              submittingText="Signing up..."
+              submitText="Sign up"
               className="w-full"
             />
-          </signInForm.AppForm>
+          </signUpForm.AppForm>
           <div className="w-full text-center text-muted-foreground">
-            <span>Don&apos;t have an account?</span>{" "}
+            <span>Already have an account?</span>{" "}
             <Link
               className={cn(
                 isSubmitting
@@ -163,9 +206,9 @@ function SignInPage() {
                 redirect,
               }}
               disabled={isSubmitting}
-              to="/sign-up"
+              to="/sign-in"
             >
-              Sign up
+              Sign in
             </Link>
           </div>
         </CardFooter>

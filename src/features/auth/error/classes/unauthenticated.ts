@@ -6,7 +6,8 @@ import { type ErrorInUI, BaseError } from "@/error/classes/base";
 
 export class UnauthenticatedError extends BaseError<
   typeof UNAUTHENTICATED_ERROR_CODE,
-  typeof UNAUTHENTICATED_ERROR_STATUS_CODE
+  typeof UNAUTHENTICATED_ERROR_STATUS_CODE,
+  null
 > {
   method: string;
   href: string;

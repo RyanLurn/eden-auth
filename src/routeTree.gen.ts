@@ -12,7 +12,11 @@ import { Route as rootRouteImport } from "./routes/__root";
 import { Route as AuthenticatedRouteRouteImport } from "./routes/_authenticated/route";
 import { Route as IndexRouteImport } from "./routes/index";
 import { Route as R500IndexRouteImport } from "./routes/500/index";
+import { Route as AuthenticatedOnboardIndexRouteImport } from "./routes/_authenticated/onboard/index";
+import { Route as AuthenticatedDashboardIndexRouteImport } from "./routes/_authenticated/dashboard/index";
 import { Route as AuthenticatedAccountIndexRouteImport } from "./routes/_authenticated/account/index";
+import { Route as authVerifyEmailIndexRouteImport } from "./routes/(auth)/verify-email/index";
+import { Route as authSignUpIndexRouteImport } from "./routes/(auth)/sign-up/index";
 import { Route as authSignInIndexRouteImport } from "./routes/(auth)/sign-in/index";
 import { Route as ApiAuthSplatRouteImport } from "./routes/api/auth/$";
 
@@ -30,12 +34,34 @@ const R500IndexRoute = R500IndexRouteImport.update({
   path: "/500/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const AuthenticatedOnboardIndexRoute =
+  AuthenticatedOnboardIndexRouteImport.update({
+    id: "/onboard/",
+    path: "/onboard/",
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any);
+const AuthenticatedDashboardIndexRoute =
+  AuthenticatedDashboardIndexRouteImport.update({
+    id: "/dashboard/",
+    path: "/dashboard/",
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any);
 const AuthenticatedAccountIndexRoute =
   AuthenticatedAccountIndexRouteImport.update({
     id: "/account/",
     path: "/account/",
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any);
+const authVerifyEmailIndexRoute = authVerifyEmailIndexRouteImport.update({
+  id: "/(auth)/verify-email/",
+  path: "/verify-email/",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const authSignUpIndexRoute = authSignUpIndexRouteImport.update({
+  id: "/(auth)/sign-up/",
+  path: "/sign-up/",
+  getParentRoute: () => rootRouteImport,
+} as any);
 const authSignInIndexRoute = authSignInIndexRouteImport.update({
   id: "/(auth)/sign-in/",
   path: "/sign-in/",
@@ -52,14 +78,22 @@ export interface FileRoutesByFullPath {
   "/500/": typeof R500IndexRoute;
   "/api/auth/$": typeof ApiAuthSplatRoute;
   "/sign-in/": typeof authSignInIndexRoute;
+  "/sign-up/": typeof authSignUpIndexRoute;
+  "/verify-email/": typeof authVerifyEmailIndexRoute;
   "/account/": typeof AuthenticatedAccountIndexRoute;
+  "/dashboard/": typeof AuthenticatedDashboardIndexRoute;
+  "/onboard/": typeof AuthenticatedOnboardIndexRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
   "/500": typeof R500IndexRoute;
   "/api/auth/$": typeof ApiAuthSplatRoute;
   "/sign-in": typeof authSignInIndexRoute;
+  "/sign-up": typeof authSignUpIndexRoute;
+  "/verify-email": typeof authVerifyEmailIndexRoute;
   "/account": typeof AuthenticatedAccountIndexRoute;
+  "/dashboard": typeof AuthenticatedDashboardIndexRoute;
+  "/onboard": typeof AuthenticatedOnboardIndexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
@@ -68,13 +102,35 @@ export interface FileRoutesById {
   "/500/": typeof R500IndexRoute;
   "/api/auth/$": typeof ApiAuthSplatRoute;
   "/(auth)/sign-in/": typeof authSignInIndexRoute;
+  "/(auth)/sign-up/": typeof authSignUpIndexRoute;
+  "/(auth)/verify-email/": typeof authVerifyEmailIndexRoute;
   "/_authenticated/account/": typeof AuthenticatedAccountIndexRoute;
+  "/_authenticated/dashboard/": typeof AuthenticatedDashboardIndexRoute;
+  "/_authenticated/onboard/": typeof AuthenticatedOnboardIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/500/" | "/api/auth/$" | "/sign-in/" | "/account/";
+  fullPaths:
+    | "/"
+    | "/500/"
+    | "/api/auth/$"
+    | "/sign-in/"
+    | "/sign-up/"
+    | "/verify-email/"
+    | "/account/"
+    | "/dashboard/"
+    | "/onboard/";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/500" | "/api/auth/$" | "/sign-in" | "/account";
+  to:
+    | "/"
+    | "/500"
+    | "/api/auth/$"
+    | "/sign-in"
+    | "/sign-up"
+    | "/verify-email"
+    | "/account"
+    | "/dashboard"
+    | "/onboard";
   id:
     | "__root__"
     | "/"
@@ -82,7 +138,11 @@ export interface FileRouteTypes {
     | "/500/"
     | "/api/auth/$"
     | "/(auth)/sign-in/"
-    | "/_authenticated/account/";
+    | "/(auth)/sign-up/"
+    | "/(auth)/verify-email/"
+    | "/_authenticated/account/"
+    | "/_authenticated/dashboard/"
+    | "/_authenticated/onboard/";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
@@ -91,6 +151,8 @@ export interface RootRouteChildren {
   R500IndexRoute: typeof R500IndexRoute;
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute;
   authSignInIndexRoute: typeof authSignInIndexRoute;
+  authSignUpIndexRoute: typeof authSignUpIndexRoute;
+  authVerifyEmailIndexRoute: typeof authVerifyEmailIndexRoute;
 }
 
 declare module "@tanstack/react-router" {
@@ -116,12 +178,40 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof R500IndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/_authenticated/onboard/": {
+      id: "/_authenticated/onboard/";
+      path: "/onboard";
+      fullPath: "/onboard/";
+      preLoaderRoute: typeof AuthenticatedOnboardIndexRouteImport;
+      parentRoute: typeof AuthenticatedRouteRoute;
+    };
+    "/_authenticated/dashboard/": {
+      id: "/_authenticated/dashboard/";
+      path: "/dashboard";
+      fullPath: "/dashboard/";
+      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport;
+      parentRoute: typeof AuthenticatedRouteRoute;
+    };
     "/_authenticated/account/": {
       id: "/_authenticated/account/";
       path: "/account";
       fullPath: "/account/";
       preLoaderRoute: typeof AuthenticatedAccountIndexRouteImport;
       parentRoute: typeof AuthenticatedRouteRoute;
+    };
+    "/(auth)/verify-email/": {
+      id: "/(auth)/verify-email/";
+      path: "/verify-email";
+      fullPath: "/verify-email/";
+      preLoaderRoute: typeof authVerifyEmailIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/(auth)/sign-up/": {
+      id: "/(auth)/sign-up/";
+      path: "/sign-up";
+      fullPath: "/sign-up/";
+      preLoaderRoute: typeof authSignUpIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
     };
     "/(auth)/sign-in/": {
       id: "/(auth)/sign-in/";
@@ -142,10 +232,14 @@ declare module "@tanstack/react-router" {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountIndexRoute: typeof AuthenticatedAccountIndexRoute;
+  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute;
+  AuthenticatedOnboardIndexRoute: typeof AuthenticatedOnboardIndexRoute;
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccountIndexRoute: AuthenticatedAccountIndexRoute,
+  AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+  AuthenticatedOnboardIndexRoute: AuthenticatedOnboardIndexRoute,
 };
 
 const AuthenticatedRouteRouteWithChildren =
@@ -157,6 +251,8 @@ const rootRouteChildren: RootRouteChildren = {
   R500IndexRoute: R500IndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   authSignInIndexRoute: authSignInIndexRoute,
+  authSignUpIndexRoute: authSignUpIndexRoute,
+  authVerifyEmailIndexRoute: authVerifyEmailIndexRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
