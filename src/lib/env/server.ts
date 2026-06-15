@@ -1,6 +1,7 @@
 import z from "zod";
 
 const serverEnvValidator = z.object({
+  NODE_ENV: z.enum(["development", "testing", "staging", "production"]),
   // For db
   SQLITE_FILE_PATH: z.string().min(1),
   // For auth
