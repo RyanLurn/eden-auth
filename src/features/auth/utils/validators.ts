@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import {
   PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE,
+  INVALID_EMAIL_ERROR_MESSAGE,
   MIN_PASSWORD_LENGTH,
   MAX_PASSWORD_LENGTH,
 } from "@/features/auth/utils/constants";
@@ -18,7 +19,7 @@ export const emailValidator = z
   .trim()
   .toLowerCase()
   .normalize("NFC")
-  .pipe(z.email("Invalid email").max(254, "Email is too long."));
+  .pipe(z.email(INVALID_EMAIL_ERROR_MESSAGE).max(254, "Email is too long."));
 
 export const passwordValidator = z
   .string()
@@ -36,6 +37,7 @@ export const signInValidator = z.object({
   password: passwordValidator,
   rememberMe: rememberMeValidator,
 });
+export type SignInParams = z.infer<typeof signInValidator>;
 
 export const signUpValidator = z
   .object({
