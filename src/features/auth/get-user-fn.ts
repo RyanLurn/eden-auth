@@ -12,7 +12,7 @@ import type {
 import type { SerializedUser } from "@/features/auth/types";
 
 import { getInferredSession } from "@/features/auth/get-inferred-session";
-import { serializeUser } from "@/features/auth/utils";
+import { serializeUser } from "@/features/auth/utils/serialize-user";
 
 const method = "GET";
 
