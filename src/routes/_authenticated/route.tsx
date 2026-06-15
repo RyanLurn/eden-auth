@@ -1,13 +1,13 @@
 import { createFileRoute, redirect, Outlet } from "@tanstack/react-router";
 
-import { getUserFn } from "@/features/auth/get-user-fn";
+import { getAuthenticatedUser } from "@/features/auth/operations/server-functions/get-authenticated-user";
 
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async ({ location }) => {
-    const getUserResult = await getUserFn();
+    const getAuthenticatedUserResult = await getAuthenticatedUser();
 
-    if (!getUserResult.success) {
-      const error = getUserResult.error;
+    if (!getAuthenticatedUserResult.success) {
+      const error = getAuthenticatedUserResult.error;
       if (error.code === "UNAUTHENTICATED_ERROR") {
         throw redirect({
           to: "/sign-in",
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_authenticated")({
       });
     }
 
-    return getUserResult.data;
+    return getAuthenticatedUserResult.data;
   },
   component: AuthenticatedLayout,
 });
