@@ -1,21 +1,17 @@
+import { createServerOnlyFn } from "@tanstack/react-start";
+
 const algorithm: Bun.Password.AlgorithmLabel = "argon2id";
 
-export async function hashPassword(password: string) {
-  const hash = await Bun.password.hash(password, {
-    algorithm,
-    memoryCost: 65536,
-    timeCost: 3,
-  });
-  return hash;
-}
+export const hashPassword = createServerOnlyFn(
+  async (password: string) =>
+    await Bun.password.hash(password, {
+      algorithm,
+      memoryCost: 65536,
+      timeCost: 3,
+    })
+);
 
-export async function verifyPassword({
-  password,
-  hash,
-}: {
-  password: string;
-  hash: string;
-}) {
-  const isMatched = await Bun.password.verify(password, hash, algorithm);
-  return isMatched;
-}
+export const verifyPassword = createServerOnlyFn(
+  async ({ password, hash }: { password: string; hash: string }) =>
+    await Bun.password.verify(password, hash, algorithm)
+);
