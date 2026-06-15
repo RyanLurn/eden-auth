@@ -156,14 +156,16 @@ function SignUpPage() {
                     const parseResult =
                       confirmPasswordValidator.safeParse(value);
                     if (!parseResult.success) {
-                      return parseResult.error.message;
+                      return parseResult.error.issues;
                     }
 
                     if (
                       parseResult.data !==
                       fieldApi.form.getFieldValue("password")
                     ) {
-                      return PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE;
+                      return [
+                        { message: PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE },
+                      ];
                     }
 
                     return undefined;
