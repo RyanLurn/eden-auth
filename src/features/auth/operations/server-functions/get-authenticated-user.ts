@@ -5,11 +5,7 @@ import {
 } from "@tanstack/react-start/server";
 import { createServerFn } from "@tanstack/react-start";
 
-import type {
-  SerializedResponse,
-  SuccessResponse,
-  ErrorResponse,
-} from "@/types/serialized-responses";
+import type { SerializedResponse } from "@/types/serialized-responses";
 import type { SerializedUser } from "@/features/auth/types";
 import type { ErrorInUI } from "@/error/classes/base";
 
