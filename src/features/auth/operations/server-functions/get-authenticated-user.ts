@@ -6,10 +6,12 @@ import {
 import { createServerFn } from "@tanstack/react-start";
 
 import type {
+  SerializedResponse,
   SuccessResponse,
   ErrorResponse,
 } from "@/types/serialized-responses";
 import type { SerializedUser } from "@/features/auth/types";
+import type { ErrorInUI } from "@/error/classes/base";
 
 import { getAuthenticatedSession } from "@/features/auth/operations/server-only/get-authenticated-session";
 import { serializeUser } from "@/features/auth/utils/serialize-user";
@@ -17,7 +19,12 @@ import { serializeUser } from "@/features/auth/utils/serialize-user";
 const method = "GET";
 
 export const getAuthenticatedUser = createServerFn({ method }).handler(
-  async () => {
+  async (): Promise<
+    SerializedResponse<
+      SerializedUser,
+      ErrorInUI<"UNAUTHENTICATED_ERROR"> | ErrorInUI<"INTERNAL_SERVER_ERROR">
+    >
+  > => {
     const headers = getRequestHeaders();
     const href = getRequestUrl().href;
 
@@ -32,21 +39,15 @@ export const getAuthenticatedUser = createServerFn({ method }).handler(
       console.error(error.serializeForLog());
 
       setResponseStatus(error.statusCode);
-      const errorInUI = error.serializeForUI();
-      const errorResponse: ErrorResponse<typeof errorInUI> = {
+      return {
         success: false,
-        error: errorInUI,
+        error: error.serializeForUI(),
       };
-      return errorResponse;
     }
 
-    const serializedUser = serializeUser(
-      getAuthenticatedSessionResult.data.user
-    );
-    const successResponse: SuccessResponse<SerializedUser> = {
+    return {
       success: true,
-      data: serializedUser,
+      data: serializeUser(getAuthenticatedSessionResult.data.user),
     };
-    return successResponse;
   }
 );
