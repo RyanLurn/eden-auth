@@ -8,7 +8,7 @@ import {
   signUpValidator,
   emailValidator,
   nameValidator,
-} from "@/features/auth/validators";
+} from "@/features/auth/utils/validators";
 import {
   CardDescription,
   CardContent,
