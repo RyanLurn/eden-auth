@@ -50,3 +50,4 @@ export const signUpValidator = z
     error: PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE,
     path: ["confirmPassword"],
   });
+export type SignUpParams = z.infer<typeof signUpValidator>;
