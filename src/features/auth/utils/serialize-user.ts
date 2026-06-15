@@ -1,6 +1,6 @@
-import type { SerializedUser, InferredUser } from "@/features/auth/types";
+import type { AuthenticatedUser, SerializedUser } from "@/features/auth/types";
 
-export function serializeUser(user: InferredUser): SerializedUser {
+export function serializeUser(user: AuthenticatedUser): SerializedUser {
   return {
     ...user,
     createdAt: user.createdAt.toISOString(),

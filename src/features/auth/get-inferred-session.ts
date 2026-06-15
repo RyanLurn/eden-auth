@@ -1,4 +1,4 @@
-import type { InferredSession } from "@/features/auth/types";
+import type { AuthenticatedSession } from "@/features/auth/types";
 import type { Result } from "@/types/result";
 
 import { UnauthenticatedError } from "@/features/auth/error/classes/unauthenticated";
@@ -13,7 +13,9 @@ export async function getInferredSession({
   headers: Headers;
   method: string;
   href: string;
-}): Promise<Result<InferredSession, UnauthenticatedError | UnexpectedError>> {
+}): Promise<
+  Result<AuthenticatedSession, UnauthenticatedError | UnexpectedError>
+> {
   try {
     const session = await auth.api.getSession({
       headers,
