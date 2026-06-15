@@ -16,7 +16,7 @@ import {
   CardTitle,
   Card,
 } from "@/components/ui/card";
-import { signInFromClient } from "@/features/auth/operations/sign-in.client";
+import { signInFromClient } from "@/features/auth/operations/sign-in-from-client";
 import { MIN_PASSWORD_LENGTH } from "@/features/auth/utils/constants";
 import { redirectSearchParamValidator } from "@/lib/validators";
 import { useAppForm } from "@/components/form/hook";
