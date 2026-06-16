@@ -53,5 +53,8 @@ export const signUpValidator = z
 export type SignUpParams = z.infer<typeof signUpValidator>;
 
 export const errorSearchParamValidator = z.object({
-  error: z.string().optional().catch(undefined),
+  error: z
+    .enum(["INVALID_TOKEN", "TOKEN_EXPIRED"])
+    .optional()
+    .catch("INVALID_TOKEN"),
 });

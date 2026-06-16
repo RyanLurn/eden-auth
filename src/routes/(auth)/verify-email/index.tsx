@@ -11,22 +11,27 @@ export const Route = createFileRoute("/(auth)/verify-email/")({
         to: "/onboard",
       });
     }
+    return {
+      errorCode: deps.error,
+    };
   },
   component: VerifyEmailPage,
 });
 
 function VerifyEmailPage() {
+  const { errorCode } = Route.useLoaderData();
+
   return (
     <div className="flex size-full flex-col items-center justify-center gap-y-4">
       <h1 className="text-2xl font-bold text-destructive">
-        Invalid email verification link
+        {errorCode === "TOKEN_EXPIRED" ? "Expired" : "Invalid"} email
+        verification link
       </h1>
       <div className="flex flex-col text-center text-muted-foreground">
         <p>
-          The email verification link you provided is either invalid or has
-          expired.
+          The email verification link you provided{" "}
+          {errorCode === "TOKEN_EXPIRED" ? "has expired" : "is invalid"}.
         </p>
-        <p>Please make sure that you entered the right link.</p>
       </div>
     </div>
   );
