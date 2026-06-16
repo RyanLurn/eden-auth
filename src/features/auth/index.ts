@@ -32,6 +32,17 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
+    // eslint-disable-next-line @typescript-eslint/require-await
+    onExistingUserSignUp: async ({ user }) => {
+      // Avoid awaiting the email sending to prevent timing attacks.
+      void sendEmail({
+        from: serverEnv.SUPPORT_EMAIL,
+        to: user.email,
+        subject: "Sign-up attempt with your email",
+        text: "Someone tried to create an account using your email address. If this was you, try signing in instead. If not, you can safely ignore this email.",
+        html: "<p>Someone tried to create an account using your email address. If this was you, try signing in instead. If not, you can safely ignore this email.</p>",
+      });
+    },
     minPasswordLength: MIN_PASSWORD_LENGTH,
     maxPasswordLength: MAX_PASSWORD_LENGTH,
     password: {
