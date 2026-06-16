@@ -1,5 +1,6 @@
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { getTestMessageUrl } from "nodemailer";
 import { betterAuth } from "better-auth";
 
 import {
@@ -41,6 +42,16 @@ export const auth = betterAuth({
         subject: "Sign-up attempt with your email",
         text: "Someone tried to create an account using your email address. If this was you, try signing in instead. If not, you can safely ignore this email.",
         html: "<p>Someone tried to create an account using your email address. If this was you, try signing in instead. If not, you can safely ignore this email.</p>",
+      }).then((sendEmailResult) => {
+        if (!sendEmailResult.success) {
+          console.error(sendEmailResult.error);
+          return;
+        }
+        if (serverEnv.NODE_ENV === "development") {
+          console.log(
+            `[AUTH] Duplicate email alert preview URL: ${getTestMessageUrl(sendEmailResult.data)}`
+          );
+        }
       });
     },
     minPasswordLength: MIN_PASSWORD_LENGTH,
@@ -63,6 +74,16 @@ export const auth = betterAuth({
         subject: "Verify your email address",
         text: `Click the link to verify your email: ${url}`,
         html: `<p>Click the link to verify your email: <a href="${url}">${url}</a></p>`,
+      }).then((sendEmailResult) => {
+        if (!sendEmailResult.success) {
+          console.error(sendEmailResult.error);
+          return;
+        }
+        if (serverEnv.NODE_ENV === "development") {
+          console.log(
+            `[AUTH] Verification email preview URL: ${getTestMessageUrl(sendEmailResult.data)}`
+          );
+        }
       });
     },
   },
