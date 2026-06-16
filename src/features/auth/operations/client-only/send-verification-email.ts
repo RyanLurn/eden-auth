@@ -6,6 +6,9 @@ import { CALLBACK_URL_FOR_EMAIL_VERIFICATION } from "@/features/auth/utils/const
 import { UnexpectedError } from "@/error/classes/unexpected";
 import { authClient } from "@/features/auth/client";
 
+const fallbackErrorMessage =
+  "Failed to send verification email. Please try again later or contact support.";
+
 export const sendVerificationEmail = createClientOnlyFn(
   async (email: string): Promise<Result<null, UnexpectedError>> => {
     try {
@@ -20,7 +23,10 @@ export const sendVerificationEmail = createClientOnlyFn(
       if (error) {
         return {
           success: false,
-          error: new UnexpectedError({ message: error.message, cause: error }),
+          error: new UnexpectedError({
+            message: error.message ?? fallbackErrorMessage,
+            cause: error,
+          }),
         };
       }
 
@@ -31,7 +37,10 @@ export const sendVerificationEmail = createClientOnlyFn(
     } catch (error) {
       return {
         success: false,
-        error: new UnexpectedError({ cause: error }),
+        error: new UnexpectedError({
+          message: fallbackErrorMessage,
+          cause: error,
+        }),
       };
     }
   }
