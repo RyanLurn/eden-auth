@@ -11,8 +11,3 @@ export const transporter = createTransport({
     pass: serverEnv.SMTP_PASS,
   },
 });
-
-transporter.on("error", (error) => {
-  console.error("[EMAIL] A transport-level error occurs:");
-  console.error(error);
-});
