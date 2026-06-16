@@ -17,13 +17,16 @@ function EmailVerificationPage() {
           If you couldn't find that email, please check your spam or click the
           button below to request a new verification email.
         </p>
-        <Link
-          className={buttonVariants({ variant: "secondary" })}
-          to="/email-verification/resend"
-        >
-          Get a new verification email
-        </Link>
       </div>
+      <Link
+        className={buttonVariants({
+          variant: "secondary",
+          className: "w-fit",
+        })}
+        to="/email-verification/resend"
+      >
+        Get a new verification email
+      </Link>
     </div>
   );
 }
