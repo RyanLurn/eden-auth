@@ -9,6 +9,9 @@ import { transporter } from "@/features/email/transporter.server";
 import { UnexpectedError } from "@/error/classes/unexpected";
 
 export const sendEmail = createServerOnlyFn(
+  // This function was created as part of the auth's email verification.
+  // Therefore, the focus was on the auth part, not in the email part.
+  // Future PRs will implement more granular error handling for this function.
   async (email: Email): Promise<Result<SentMessageInfo, UnexpectedError>> => {
     try {
       const info = await transporter.sendMail(email);
