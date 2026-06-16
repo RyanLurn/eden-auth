@@ -1,19 +1,19 @@
 import {
-  UNVERIFIED_EMAIL_ERROR_STATUS_CODE,
-  UNVERIFIED_EMAIL_ERROR_CODE,
+  EMAIL_NOT_VERIFIED_ERROR_STATUS_CODE,
+  EMAIL_NOT_VERIFIED_ERROR_CODE,
 } from "@/features/auth/error/constants";
 import { BaseError } from "@/error/classes/base";
 
-export class UnverifiedEmailError extends BaseError<
-  typeof UNVERIFIED_EMAIL_ERROR_CODE,
-  typeof UNVERIFIED_EMAIL_ERROR_STATUS_CODE
+export class EmailNotVerifiedError extends BaseError<
+  typeof EMAIL_NOT_VERIFIED_ERROR_CODE,
+  typeof EMAIL_NOT_VERIFIED_ERROR_STATUS_CODE
 > {
   constructor({ message, cause }: { message?: string; cause: unknown }) {
     super({
-      name: "UnverifiedEmailError",
+      name: "EmailNotVerifiedError",
       message: message ?? "Please verify your email address",
-      code: UNVERIFIED_EMAIL_ERROR_CODE,
-      statusCode: UNVERIFIED_EMAIL_ERROR_STATUS_CODE,
+      code: EMAIL_NOT_VERIFIED_ERROR_CODE,
+      statusCode: EMAIL_NOT_VERIFIED_ERROR_STATUS_CODE,
       cause,
     });
   }
