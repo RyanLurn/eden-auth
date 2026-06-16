@@ -64,7 +64,7 @@ function SignInPage() {
           return;
         }
         if (error.code === "EMAIL_NOT_VERIFIED_ERROR") {
-          await router.navigate({ to: "/verify-email-request" });
+          await router.navigate({ to: "/email-verification" });
           return;
         }
         toast.error(error.message);

@@ -16,9 +16,9 @@ import { Route as AuthenticatedOnboardIndexRouteImport } from "./routes/_authent
 import { Route as AuthenticatedDashboardIndexRouteImport } from "./routes/_authenticated/dashboard/index";
 import { Route as AuthenticatedAccountIndexRouteImport } from "./routes/_authenticated/account/index";
 import { Route as authVerifyEmailIndexRouteImport } from "./routes/(auth)/verify-email/index";
-import { Route as authVerifyEmailRequestIndexRouteImport } from "./routes/(auth)/verify-email-request/index";
 import { Route as authSignUpIndexRouteImport } from "./routes/(auth)/sign-up/index";
 import { Route as authSignInIndexRouteImport } from "./routes/(auth)/sign-in/index";
+import { Route as authEmailVerificationIndexRouteImport } from "./routes/(auth)/email-verification/index";
 import { Route as ApiAuthSplatRouteImport } from "./routes/api/auth/$";
 import { Route as authEmailVerificationResendIndexRouteImport } from "./routes/(auth)/email-verification/resend/index";
 
@@ -59,12 +59,6 @@ const authVerifyEmailIndexRoute = authVerifyEmailIndexRouteImport.update({
   path: "/verify-email/",
   getParentRoute: () => rootRouteImport,
 } as any);
-const authVerifyEmailRequestIndexRoute =
-  authVerifyEmailRequestIndexRouteImport.update({
-    id: "/(auth)/verify-email-request/",
-    path: "/verify-email-request/",
-    getParentRoute: () => rootRouteImport,
-  } as any);
 const authSignUpIndexRoute = authSignUpIndexRouteImport.update({
   id: "/(auth)/sign-up/",
   path: "/sign-up/",
@@ -75,6 +69,12 @@ const authSignInIndexRoute = authSignInIndexRouteImport.update({
   path: "/sign-in/",
   getParentRoute: () => rootRouteImport,
 } as any);
+const authEmailVerificationIndexRoute =
+  authEmailVerificationIndexRouteImport.update({
+    id: "/(auth)/email-verification/",
+    path: "/email-verification/",
+    getParentRoute: () => rootRouteImport,
+  } as any);
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: "/api/auth/$",
   path: "/api/auth/$",
@@ -91,9 +91,9 @@ export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
   "/500/": typeof R500IndexRoute;
   "/api/auth/$": typeof ApiAuthSplatRoute;
+  "/email-verification/": typeof authEmailVerificationIndexRoute;
   "/sign-in/": typeof authSignInIndexRoute;
   "/sign-up/": typeof authSignUpIndexRoute;
-  "/verify-email-request/": typeof authVerifyEmailRequestIndexRoute;
   "/verify-email/": typeof authVerifyEmailIndexRoute;
   "/account/": typeof AuthenticatedAccountIndexRoute;
   "/dashboard/": typeof AuthenticatedDashboardIndexRoute;
@@ -104,9 +104,9 @@ export interface FileRoutesByTo {
   "/": typeof IndexRoute;
   "/500": typeof R500IndexRoute;
   "/api/auth/$": typeof ApiAuthSplatRoute;
+  "/email-verification": typeof authEmailVerificationIndexRoute;
   "/sign-in": typeof authSignInIndexRoute;
   "/sign-up": typeof authSignUpIndexRoute;
-  "/verify-email-request": typeof authVerifyEmailRequestIndexRoute;
   "/verify-email": typeof authVerifyEmailIndexRoute;
   "/account": typeof AuthenticatedAccountIndexRoute;
   "/dashboard": typeof AuthenticatedDashboardIndexRoute;
@@ -119,9 +119,9 @@ export interface FileRoutesById {
   "/_authenticated": typeof AuthenticatedRouteRouteWithChildren;
   "/500/": typeof R500IndexRoute;
   "/api/auth/$": typeof ApiAuthSplatRoute;
+  "/(auth)/email-verification/": typeof authEmailVerificationIndexRoute;
   "/(auth)/sign-in/": typeof authSignInIndexRoute;
   "/(auth)/sign-up/": typeof authSignUpIndexRoute;
-  "/(auth)/verify-email-request/": typeof authVerifyEmailRequestIndexRoute;
   "/(auth)/verify-email/": typeof authVerifyEmailIndexRoute;
   "/_authenticated/account/": typeof AuthenticatedAccountIndexRoute;
   "/_authenticated/dashboard/": typeof AuthenticatedDashboardIndexRoute;
@@ -134,9 +134,9 @@ export interface FileRouteTypes {
     | "/"
     | "/500/"
     | "/api/auth/$"
+    | "/email-verification/"
     | "/sign-in/"
     | "/sign-up/"
-    | "/verify-email-request/"
     | "/verify-email/"
     | "/account/"
     | "/dashboard/"
@@ -147,9 +147,9 @@ export interface FileRouteTypes {
     | "/"
     | "/500"
     | "/api/auth/$"
+    | "/email-verification"
     | "/sign-in"
     | "/sign-up"
-    | "/verify-email-request"
     | "/verify-email"
     | "/account"
     | "/dashboard"
@@ -161,9 +161,9 @@ export interface FileRouteTypes {
     | "/_authenticated"
     | "/500/"
     | "/api/auth/$"
+    | "/(auth)/email-verification/"
     | "/(auth)/sign-in/"
     | "/(auth)/sign-up/"
-    | "/(auth)/verify-email-request/"
     | "/(auth)/verify-email/"
     | "/_authenticated/account/"
     | "/_authenticated/dashboard/"
@@ -176,9 +176,9 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren;
   R500IndexRoute: typeof R500IndexRoute;
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute;
+  authEmailVerificationIndexRoute: typeof authEmailVerificationIndexRoute;
   authSignInIndexRoute: typeof authSignInIndexRoute;
   authSignUpIndexRoute: typeof authSignUpIndexRoute;
-  authVerifyEmailRequestIndexRoute: typeof authVerifyEmailRequestIndexRoute;
   authVerifyEmailIndexRoute: typeof authVerifyEmailIndexRoute;
   authEmailVerificationResendIndexRoute: typeof authEmailVerificationResendIndexRoute;
 }
@@ -234,13 +234,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof authVerifyEmailIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
-    "/(auth)/verify-email-request/": {
-      id: "/(auth)/verify-email-request/";
-      path: "/verify-email-request";
-      fullPath: "/verify-email-request/";
-      preLoaderRoute: typeof authVerifyEmailRequestIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
     "/(auth)/sign-up/": {
       id: "/(auth)/sign-up/";
       path: "/sign-up";
@@ -253,6 +246,13 @@ declare module "@tanstack/react-router" {
       path: "/sign-in";
       fullPath: "/sign-in/";
       preLoaderRoute: typeof authSignInIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/(auth)/email-verification/": {
+      id: "/(auth)/email-verification/";
+      path: "/email-verification";
+      fullPath: "/email-verification/";
+      preLoaderRoute: typeof authEmailVerificationIndexRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/api/auth/$": {
@@ -292,9 +292,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   R500IndexRoute: R500IndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  authEmailVerificationIndexRoute: authEmailVerificationIndexRoute,
   authSignInIndexRoute: authSignInIndexRoute,
   authSignUpIndexRoute: authSignUpIndexRoute,
-  authVerifyEmailRequestIndexRoute: authVerifyEmailRequestIndexRoute,
   authVerifyEmailIndexRoute: authVerifyEmailIndexRoute,
   authEmailVerificationResendIndexRoute: authEmailVerificationResendIndexRoute,
 };
