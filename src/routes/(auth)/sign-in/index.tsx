@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useRouter, Link } from "@tanstack/react-router";
 import { useStore } from "@tanstack/react-form";
 import { toast } from "sonner";
 
@@ -31,6 +31,8 @@ export const Route = createFileRoute("/(auth)/sign-in/")({
 function SignInPage() {
   const { redirect } = Route.useSearch();
 
+  const router = useRouter();
+
   const signInForm = useAppForm({
     formId: "sign-in-form",
     defaultValues: {
@@ -58,6 +60,10 @@ function SignInPage() {
               onServer: [{ message: error.message }],
             },
           }));
+          return;
+        }
+        if (error.code === "EMAIL_NOT_VERIFIED_ERROR") {
+          await router.navigate({ to: "/verify-email" });
           return;
         }
         toast.error(error.message);
