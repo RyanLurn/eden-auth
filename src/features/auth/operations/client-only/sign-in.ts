@@ -1,13 +1,14 @@
 import { createClientOnlyFn } from "@tanstack/react-start";
 
 import type { SignInParams } from "@/features/auth/utils/validators";
-import type { RedirectSearchParam } from "@/lib/validators";
 import type { Result } from "@/types/result";
 
+import {
+  CALLBACK_URL_FOR_EMAIL_VERIFICATION,
+  INVALID_EMAIL_ERROR_MESSAGE,
+} from "@/features/auth/utils/constants";
 import { InvalidEmailOrPasswordError } from "@/features/auth/error/classes/invalid-email-or-password";
-import { INVALID_EMAIL_OR_PASSWORD_ERROR_CODE } from "@/features/auth/error/constants";
-import { INVALID_EMAIL_ERROR_MESSAGE } from "@/features/auth/utils/constants";
-import { Route as DashboardRoute } from "@/routes/_authenticated/dashboard";
+import { EmailNotVerifiedError } from "@/features/auth/error/classes/email-not-verified";
 import { ValidationError } from "@/error/classes/validation";
 import { UnexpectedError } from "@/error/classes/unexpected";
 import { authClient } from "@/features/auth/client";
@@ -20,11 +21,13 @@ export const signInFromClient = createClientOnlyFn(
     email,
     password,
     rememberMe,
-    redirect,
-  }: RedirectSearchParam & SignInParams): Promise<
+  }: SignInParams): Promise<
     Result<
       null,
-      InvalidEmailOrPasswordError | ValidationError<"email"> | UnexpectedError
+      | InvalidEmailOrPasswordError
+      | ValidationError<"email">
+      | EmailNotVerifiedError
+      | UnexpectedError
     >
   > => {
     try {
@@ -33,17 +36,25 @@ export const signInFromClient = createClientOnlyFn(
         password,
         rememberMe,
         // Unlike the signUp method, this callback url actually applies to both email verification and this method's success.
-        // Which means it will automatically redirects the user without us calling `router.navigate` manually.
-        callbackURL: redirect ? redirect : DashboardRoute.to,
+        // Which means that in both cases it will automatically redirects the user to the URL specified here.
+        // We want this URL to apply to the email verification case so that only the onboarding page has to check for the error search param.
+        // So, to make sure that this URL doesn't apply to this method's success, we configure disableDefaultFetchPlugins in auth client to be true.
+        callbackURL: CALLBACK_URL_FOR_EMAIL_VERIFICATION,
       });
 
       if (error) {
         if (error.code) {
           switch (error.code) {
-            case INVALID_EMAIL_OR_PASSWORD_ERROR_CODE: {
+            case "INVALID_EMAIL_OR_PASSWORD": {
               return {
                 success: false,
                 error: new InvalidEmailOrPasswordError({ cause: error }),
+              };
+            }
+            case "EMAIL_NOT_VERIFIED": {
+              return {
+                success: false,
+                error: new EmailNotVerifiedError({ cause: error }),
               };
             }
             case "INVALID_EMAIL": {

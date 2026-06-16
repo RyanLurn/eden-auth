@@ -1,9 +1,24 @@
 import z from "zod";
 
 const serverEnvValidator = z.object({
+  NODE_ENV: z.enum(["development", "testing", "staging", "production"]),
+  // For db
   SQLITE_FILE_PATH: z.string().min(1),
+  // For auth
   BETTER_AUTH_SECRET: z.string().min(1),
   BETTER_AUTH_URL: z.url(),
+  // For email
+  SMTP_HOST: z.string().min(1),
+  SMTP_PORT: z.preprocess((value) => {
+    if (typeof value === "string") {
+      return Number.parseInt(value);
+    }
+    return value;
+  }, z.int().min(1).max(65535)),
+  SMTP_SECURE: z.stringbool(),
+  SMTP_USER: z.string().min(1),
+  SMTP_PASS: z.string().min(1),
+  SUPPORT_EMAIL: z.email(),
 });
 
 export const serverEnv = serverEnvValidator.parse(process.env);

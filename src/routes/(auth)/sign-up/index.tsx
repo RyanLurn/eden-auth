@@ -71,8 +71,7 @@ function SignUpPage() {
         return;
       }
 
-      // For when we require email verification.
-      await router.navigate({ to: "/verify-email" });
+      await router.navigate({ to: "/email-verification" });
     },
   });
 

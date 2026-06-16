@@ -1,5 +1,6 @@
 import { tanstackStartCookies } from "better-auth/tanstack-start";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { getTestMessageUrl } from "nodemailer";
 import { betterAuth } from "better-auth";
 
 import {
@@ -13,6 +14,7 @@ import {
 } from "@/db/schema/tables/auth";
 import { verifyPassword, hashPassword } from "@/features/auth/utils/password";
 import { userTable } from "@/db/schema/tables/user";
+import { sendEmail } from "@/features/email/send";
 import { serverEnv } from "@/lib/env/server";
 import { db } from "@/db";
 
@@ -30,11 +32,59 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
+    // eslint-disable-next-line @typescript-eslint/require-await
+    onExistingUserSignUp: async ({ user }) => {
+      // Avoid awaiting the email sending to prevent timing attacks.
+      void sendEmail({
+        from: serverEnv.SUPPORT_EMAIL,
+        to: user.email,
+        subject: "Sign-up attempt with your email",
+        text: "Someone tried to create an account using your email address. If this was you, try signing in instead. If not, you can safely ignore this email.",
+        html: "<p>Someone tried to create an account using your email address. If this was you, try signing in instead. If not, you can safely ignore this email.</p>",
+      }).then((sendEmailResult) => {
+        if (!sendEmailResult.success) {
+          console.error(sendEmailResult.error);
+          return;
+        }
+        if (serverEnv.NODE_ENV === "development") {
+          console.log(
+            `[AUTH] Duplicate email alert preview URL: ${getTestMessageUrl(sendEmailResult.data)}`
+          );
+        }
+      });
+    },
     minPasswordLength: MIN_PASSWORD_LENGTH,
     maxPasswordLength: MAX_PASSWORD_LENGTH,
     password: {
       hash: hashPassword,
       verify: verifyPassword,
+    },
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    sendOnSignIn: true,
+    autoSignInAfterVerification: true,
+    // eslint-disable-next-line @typescript-eslint/require-await
+    sendVerificationEmail: async ({ user, url }) => {
+      // Avoid awaiting the email sending to prevent timing attacks.
+      void sendEmail({
+        from: serverEnv.SUPPORT_EMAIL,
+        to: user.email,
+        subject: "Verify your email address",
+        text: `Click the link to verify your email: ${url}`,
+        html: `<p>Click the link to verify your email: <a href="${url}">${url}</a></p>`,
+      }).then((sendEmailResult) => {
+        if (!sendEmailResult.success) {
+          console.error(sendEmailResult.error);
+          return;
+        }
+        if (serverEnv.NODE_ENV === "development") {
+          console.log(
+            `[AUTH] Verification email preview URL: ${getTestMessageUrl(sendEmailResult.data)}`
+          );
+        }
+      });
     },
   },
   advanced: {
