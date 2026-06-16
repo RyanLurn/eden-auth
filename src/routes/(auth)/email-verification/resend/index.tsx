@@ -31,13 +31,23 @@ function ResendVerificationEmailPage() {
         email: emailValidator,
       }),
     },
-    onSubmit: async ({ value }) => {
+    onSubmit: async ({ value, formApi }) => {
       const email = emailValidator.parse(value.email);
 
       const sendVerificationEmailResult = await sendVerificationEmail(email);
 
       if (!sendVerificationEmailResult.success) {
-        toast.error(sendVerificationEmailResult.error.message);
+        const error = sendVerificationEmailResult.error;
+        if (error.code === "VALIDATION_ERROR") {
+          formApi.setFieldMeta(error.entity, (prev) => ({
+            ...prev,
+            errorMap: {
+              onServer: [{ message: error.message }],
+            },
+          }));
+          return;
+        }
+        toast.error(error.message);
         return;
       }
 
