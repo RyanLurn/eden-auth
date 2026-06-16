@@ -7,4 +7,4 @@ export const INVALID_EMAIL_ERROR_MESSAGE = "Invalid email.";
 export const PASSWORDS_DO_NOT_MATCH_ERROR_MESSAGE = "Passwords do not match.";
 
 export const CALLBACK_URL_FOR_EMAIL_VERIFICATION: ToOptions["to"] =
-  "/verify-email";
+  "/email-verification/check";
