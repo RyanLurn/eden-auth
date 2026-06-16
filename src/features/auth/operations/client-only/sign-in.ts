@@ -5,6 +5,7 @@ import type { RedirectSearchParam } from "@/lib/validators";
 import type { Result } from "@/types/result";
 
 import { InvalidEmailOrPasswordError } from "@/features/auth/error/classes/invalid-email-or-password";
+import { EmailNotVerifiedError } from "@/features/auth/error/classes/email-not-verified";
 import { INVALID_EMAIL_ERROR_MESSAGE } from "@/features/auth/utils/constants";
 import { Route as DashboardRoute } from "@/routes/_authenticated/dashboard";
 import { ValidationError } from "@/error/classes/validation";
@@ -23,7 +24,10 @@ export const signInFromClient = createClientOnlyFn(
   }: RedirectSearchParam & SignInParams): Promise<
     Result<
       null,
-      InvalidEmailOrPasswordError | ValidationError<"email"> | UnexpectedError
+      | InvalidEmailOrPasswordError
+      | ValidationError<"email">
+      | EmailNotVerifiedError
+      | UnexpectedError
     >
   > => {
     try {
@@ -43,6 +47,12 @@ export const signInFromClient = createClientOnlyFn(
               return {
                 success: false,
                 error: new InvalidEmailOrPasswordError({ cause: error }),
+              };
+            }
+            case "EMAIL_NOT_VERIFIED": {
+              return {
+                success: false,
+                error: new EmailNotVerifiedError({ cause: error }),
               };
             }
             case "INVALID_EMAIL": {
