@@ -17,6 +17,7 @@ import {
   Card,
 } from "@/components/ui/card";
 import { signInFromClient } from "@/features/auth/operations/client-only/sign-in";
+import { Route as DashboardRoute } from "@/routes/_authenticated/dashboard";
 import { MIN_PASSWORD_LENGTH } from "@/features/auth/utils/constants";
 import { redirectSearchParamValidator } from "@/lib/validators";
 import { useAppForm } from "@/components/form/hook";
@@ -49,7 +50,7 @@ function SignInPage() {
       // So, we need to parse it again here to get the transformed email.
       const parsedValue = signInValidator.parse(value);
 
-      const signInResult = await signInFromClient({ ...parsedValue, redirect });
+      const signInResult = await signInFromClient(parsedValue);
 
       if (!signInResult.success) {
         const error = signInResult.error;
@@ -71,6 +72,8 @@ function SignInPage() {
       }
 
       toast.success("Welcome back!");
+      // We now handle redirect on sign in success manually (like sign up) to keep the callback URL for email verification only.
+      await router.navigate({ to: redirect ? redirect : DashboardRoute.to });
     },
   });
 
