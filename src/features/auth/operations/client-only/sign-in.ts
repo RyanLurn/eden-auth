@@ -5,7 +5,6 @@ import type { RedirectSearchParam } from "@/lib/validators";
 import type { Result } from "@/types/result";
 
 import { InvalidEmailOrPasswordError } from "@/features/auth/error/classes/invalid-email-or-password";
-import { INVALID_EMAIL_OR_PASSWORD_ERROR_CODE } from "@/features/auth/error/constants";
 import { INVALID_EMAIL_ERROR_MESSAGE } from "@/features/auth/utils/constants";
 import { Route as DashboardRoute } from "@/routes/_authenticated/dashboard";
 import { ValidationError } from "@/error/classes/validation";
@@ -40,7 +39,7 @@ export const signInFromClient = createClientOnlyFn(
       if (error) {
         if (error.code) {
           switch (error.code) {
-            case INVALID_EMAIL_OR_PASSWORD_ERROR_CODE: {
+            case "INVALID_EMAIL_OR_PASSWORD": {
               return {
                 success: false,
                 error: new InvalidEmailOrPasswordError({ cause: error }),
