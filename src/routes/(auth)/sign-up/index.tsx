@@ -71,7 +71,7 @@ function SignUpPage() {
         return;
       }
 
-      await router.navigate({ to: "/verify-email" });
+      await router.navigate({ to: "/verify-email-request" });
     },
   });
 
