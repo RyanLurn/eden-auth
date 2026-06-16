@@ -14,7 +14,7 @@ const serverEnvValidator = z.object({
       return Number.parseInt(value);
     }
     return value;
-  }, z.int()),
+  }, z.int().min(1).max(65535)),
   SMTP_SECURE: z.stringbool(),
   SMTP_USER: z.string().min(1),
   SMTP_PASS: z.string().min(1),
