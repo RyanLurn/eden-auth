@@ -51,3 +51,7 @@ export const signUpValidator = z
     path: ["confirmPassword"],
   });
 export type SignUpParams = z.infer<typeof signUpValidator>;
+
+export const errorSearchParamValidator = z.object({
+  error: z.string().optional().catch(undefined),
+});
