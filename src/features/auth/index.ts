@@ -31,6 +31,7 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
     minPasswordLength: MIN_PASSWORD_LENGTH,
     maxPasswordLength: MAX_PASSWORD_LENGTH,
     password: {
@@ -39,6 +40,9 @@ export const auth = betterAuth({
     },
   },
   emailVerification: {
+    sendOnSignUp: true,
+    sendOnSignIn: true,
+    autoSignInAfterVerification: true,
     // eslint-disable-next-line @typescript-eslint/require-await
     sendVerificationEmail: async ({ user, url }) => {
       // Avoid awaiting the email sending to prevent timing attacks.
