@@ -18,6 +18,7 @@ const serverEnvValidator = z.object({
   SMTP_SECURE: z.stringbool(),
   SMTP_USER: z.string().min(1),
   SMTP_PASS: z.string().min(1),
+  SUPPORT_EMAIL: z.email(),
 });
 
 export const serverEnv = serverEnvValidator.parse(process.env);

@@ -13,6 +13,7 @@ import {
 } from "@/db/schema/tables/auth";
 import { verifyPassword, hashPassword } from "@/features/auth/utils/password";
 import { userTable } from "@/db/schema/tables/user";
+import { sendEmail } from "@/features/email/send";
 import { serverEnv } from "@/lib/env/server";
 import { db } from "@/db";
 
@@ -35,6 +36,19 @@ export const auth = betterAuth({
     password: {
       hash: hashPassword,
       verify: verifyPassword,
+    },
+  },
+  emailVerification: {
+    // eslint-disable-next-line @typescript-eslint/require-await
+    sendVerificationEmail: async ({ user, url }) => {
+      // Avoid awaiting the email sending to prevent timing attacks.
+      void sendEmail({
+        from: serverEnv.SUPPORT_EMAIL,
+        to: user.email,
+        subject: "Verify your email address",
+        text: `Click the link to verify your email: ${url}`,
+        html: `<p>Click the link to verify your email: <a href="${url}">${url}</a></p>`,
+      });
     },
   },
   advanced: {
