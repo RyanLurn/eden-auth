@@ -20,6 +20,7 @@ import { Route as authVerifyEmailRequestIndexRouteImport } from "./routes/(auth)
 import { Route as authSignUpIndexRouteImport } from "./routes/(auth)/sign-up/index";
 import { Route as authSignInIndexRouteImport } from "./routes/(auth)/sign-in/index";
 import { Route as ApiAuthSplatRouteImport } from "./routes/api/auth/$";
+import { Route as authEmailVerificationResendIndexRouteImport } from "./routes/(auth)/email-verification/resend/index";
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: "/_authenticated",
@@ -79,6 +80,12 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: "/api/auth/$",
   getParentRoute: () => rootRouteImport,
 } as any);
+const authEmailVerificationResendIndexRoute =
+  authEmailVerificationResendIndexRouteImport.update({
+    id: "/(auth)/email-verification/resend/",
+    path: "/email-verification/resend/",
+    getParentRoute: () => rootRouteImport,
+  } as any);
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
@@ -91,6 +98,7 @@ export interface FileRoutesByFullPath {
   "/account/": typeof AuthenticatedAccountIndexRoute;
   "/dashboard/": typeof AuthenticatedDashboardIndexRoute;
   "/onboard/": typeof AuthenticatedOnboardIndexRoute;
+  "/email-verification/resend/": typeof authEmailVerificationResendIndexRoute;
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
@@ -103,6 +111,7 @@ export interface FileRoutesByTo {
   "/account": typeof AuthenticatedAccountIndexRoute;
   "/dashboard": typeof AuthenticatedDashboardIndexRoute;
   "/onboard": typeof AuthenticatedOnboardIndexRoute;
+  "/email-verification/resend": typeof authEmailVerificationResendIndexRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
@@ -117,6 +126,7 @@ export interface FileRoutesById {
   "/_authenticated/account/": typeof AuthenticatedAccountIndexRoute;
   "/_authenticated/dashboard/": typeof AuthenticatedDashboardIndexRoute;
   "/_authenticated/onboard/": typeof AuthenticatedOnboardIndexRoute;
+  "/(auth)/email-verification/resend/": typeof authEmailVerificationResendIndexRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
@@ -130,7 +140,8 @@ export interface FileRouteTypes {
     | "/verify-email/"
     | "/account/"
     | "/dashboard/"
-    | "/onboard/";
+    | "/onboard/"
+    | "/email-verification/resend/";
   fileRoutesByTo: FileRoutesByTo;
   to:
     | "/"
@@ -142,7 +153,8 @@ export interface FileRouteTypes {
     | "/verify-email"
     | "/account"
     | "/dashboard"
-    | "/onboard";
+    | "/onboard"
+    | "/email-verification/resend";
   id:
     | "__root__"
     | "/"
@@ -155,7 +167,8 @@ export interface FileRouteTypes {
     | "/(auth)/verify-email/"
     | "/_authenticated/account/"
     | "/_authenticated/dashboard/"
-    | "/_authenticated/onboard/";
+    | "/_authenticated/onboard/"
+    | "/(auth)/email-verification/resend/";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
@@ -167,6 +180,7 @@ export interface RootRouteChildren {
   authSignUpIndexRoute: typeof authSignUpIndexRoute;
   authVerifyEmailRequestIndexRoute: typeof authVerifyEmailRequestIndexRoute;
   authVerifyEmailIndexRoute: typeof authVerifyEmailIndexRoute;
+  authEmailVerificationResendIndexRoute: typeof authEmailVerificationResendIndexRoute;
 }
 
 declare module "@tanstack/react-router" {
@@ -248,6 +262,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof ApiAuthSplatRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/(auth)/email-verification/resend/": {
+      id: "/(auth)/email-verification/resend/";
+      path: "/email-verification/resend";
+      fullPath: "/email-verification/resend/";
+      preLoaderRoute: typeof authEmailVerificationResendIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
@@ -275,6 +296,7 @@ const rootRouteChildren: RootRouteChildren = {
   authSignUpIndexRoute: authSignUpIndexRoute,
   authVerifyEmailRequestIndexRoute: authVerifyEmailRequestIndexRoute,
   authVerifyEmailIndexRoute: authVerifyEmailIndexRoute,
+  authEmailVerificationResendIndexRoute: authEmailVerificationResendIndexRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
