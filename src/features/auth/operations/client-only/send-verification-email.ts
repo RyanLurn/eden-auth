@@ -20,7 +20,7 @@ export const sendVerificationEmail = createClientOnlyFn(
       if (error) {
         return {
           success: false,
-          error: new UnexpectedError({ cause: error }),
+          error: new UnexpectedError({ message: error.message, cause: error }),
         };
       }
 
