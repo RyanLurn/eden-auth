@@ -3,10 +3,12 @@ import { createClientOnlyFn } from "@tanstack/react-start";
 import type { SignInParams } from "@/features/auth/utils/validators";
 import type { Result } from "@/types/result";
 
+import {
+  CALLBACK_URL_FOR_EMAIL_VERIFICATION,
+  INVALID_EMAIL_ERROR_MESSAGE,
+} from "@/features/auth/utils/constants";
 import { InvalidEmailOrPasswordError } from "@/features/auth/error/classes/invalid-email-or-password";
 import { EmailNotVerifiedError } from "@/features/auth/error/classes/email-not-verified";
-import { INVALID_EMAIL_ERROR_MESSAGE } from "@/features/auth/utils/constants";
-import { Route as OnboardRoute } from "@/routes/_authenticated/onboard";
 import { ValidationError } from "@/error/classes/validation";
 import { UnexpectedError } from "@/error/classes/unexpected";
 import { authClient } from "@/features/auth/client";
@@ -37,7 +39,7 @@ export const signInFromClient = createClientOnlyFn(
         // Which means that in both cases it will automatically redirects the user to the URL specified here.
         // We want this URL to apply to the email verification case so that only the onboarding page has to check for the error search param.
         // So, to make sure that this URL doesn't apply to this method's success, we configure disableDefaultFetchPlugins in auth client to be true.
-        callbackURL: OnboardRoute.to,
+        callbackURL: CALLBACK_URL_FOR_EMAIL_VERIFICATION,
       });
 
       if (error) {

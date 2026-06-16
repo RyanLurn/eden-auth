@@ -4,8 +4,10 @@ import type { SignUpParams } from "@/features/auth/utils/validators";
 import type { StrictOmit } from "@/types/utils";
 import type { Result } from "@/types/result";
 
-import { INVALID_EMAIL_ERROR_MESSAGE } from "@/features/auth/utils/constants";
-import { Route as OnboardRoute } from "@/routes/_authenticated/onboard";
+import {
+  CALLBACK_URL_FOR_EMAIL_VERIFICATION,
+  INVALID_EMAIL_ERROR_MESSAGE,
+} from "@/features/auth/utils/constants";
 import { ValidationError } from "@/error/classes/validation";
 import { UnexpectedError } from "@/error/classes/unexpected";
 import { authClient } from "@/features/auth/client";
@@ -28,7 +30,7 @@ export const signUpFromClient = createClientOnlyFn(
         password,
         // This is a callback for email verification, not for this method's success.
         // Which means that we need to use `router.navigate` to navigate the user on success.
-        callbackURL: OnboardRoute.to,
+        callbackURL: CALLBACK_URL_FOR_EMAIL_VERIFICATION,
       });
 
       if (error) {
