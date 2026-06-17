@@ -56,9 +56,20 @@ export class Queue<TJob extends Job> {
 
       if (processingResult.success) {
         console.log(
-          `[${this.name.toUpperCase()} QUEUE] ${job.name} succeeded after ${job.attempts} attempts (out of ${this.maxAttempts}).`
+          `[${this.name.toUpperCase()} QUEUE] ${job.name} succeeded after ${job.attempts} attempt(s) (out of ${this.maxAttempts}).`
         );
         this.queue.shift();
+        break;
+      }
+
+      const error = processingResult.error;
+      const isRetryable = error.isRetryable;
+
+      if (!isRetryable) {
+        console.error(
+          `[${this.name.toUpperCase()} QUEUE] ${job.name} failed after ${job.attempts} attempt(s) with an error that ${isRetryable === false ? "cannot" : "shouldn't"} be retried:`
+        );
+        console.error(error);
         break;
       }
 
@@ -70,7 +81,7 @@ export class Queue<TJob extends Job> {
 
       if (job.attempts >= this.maxAttempts) {
         console.error(
-          `[${this.name.toUpperCase()} QUEUE] Giving up on ${job.name} after ${this.maxAttempts} attempts`
+          `[${this.name.toUpperCase()} QUEUE] Giving up on ${job.name} after ${this.maxAttempts} attempts.`
         );
         this.queue.shift(); // drop it
         break;
