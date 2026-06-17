@@ -7,6 +7,7 @@ export class BaseError<
 > extends Error {
   code: TCode;
   statusCode: TStatusCode;
+  isRetryable?: boolean;
   declare cause: TCause;
 
   constructor({
@@ -14,18 +15,21 @@ export class BaseError<
     message,
     code,
     statusCode,
+    isRetryable,
     cause,
   }: {
     name: string;
     message: string;
     code: TCode;
     statusCode: TStatusCode;
+    isRetryable?: boolean;
     cause: TCause;
   }) {
     super(message, { cause });
     this.name = name;
-    this.statusCode = statusCode;
     this.code = code;
+    this.statusCode = statusCode;
+    this.isRetryable = isRetryable;
   }
 
   serializeForLog() {
