@@ -8,7 +8,7 @@ export interface Email {
   html: string;
 }
 
-export interface NodemailerError {
+export interface NodemailerErrorObject {
   message: string;
   code: keyof typeof NODEMAILER_ERROR_CODES;
   command: string;
