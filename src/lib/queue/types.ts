@@ -3,7 +3,7 @@ import type { Result } from "@/types/result";
 
 export interface Job {
   name: string;
-  input: NonNullable<unknown>;
+  input: unknown;
   attempts: number;
 }
 
