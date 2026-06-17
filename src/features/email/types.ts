@@ -1,4 +1,7 @@
-import type { NODEMAILER_ERROR_CODES } from "@/features/email/error/constants";
+import type {
+  NODEMAILER_CONNECTION_ERROR_CODES,
+  NODEMAILER_ERROR_CODES,
+} from "@/features/email/error/constants";
 
 export interface Email {
   from: string;
@@ -14,4 +17,8 @@ export interface NodemailerErrorObject {
   command: string;
   response: string;
   responseCode: number;
+}
+
+export interface NodemailerConnectionErrorObject extends NodemailerErrorObject {
+  code: keyof typeof NODEMAILER_CONNECTION_ERROR_CODES;
 }

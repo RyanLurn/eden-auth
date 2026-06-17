@@ -1,10 +1,15 @@
 // Copied from https://github.com/nodemailer/nodemailer/blob/master/lib/errors.js
-export const NODEMAILER_ERROR_CODES = {
-  // Connection errors
+
+export const NODEMAILER_CONNECTION_ERROR_CODES = {
   ECONNECTION: "Connection closed unexpectedly",
   ETIMEDOUT: "Connection or operation timed out",
   ESOCKET: "Socket-level error",
   EDNS: "DNS resolution failed",
+};
+
+export const NODEMAILER_ERROR_CODES = {
+  // Connection errors
+  ...NODEMAILER_CONNECTION_ERROR_CODES,
 
   // TLS/Security errors
   ETLS: "TLS handshake or STARTTLS failed",
